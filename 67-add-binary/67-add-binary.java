@@ -11,8 +11,8 @@ class Solution {
             if (j >= 0) {
                 rem += (b.charAt(j) - '0');
             }
-            result.append((rem % 2));
-            rem /= 2;
+            result.append((rem & 1));
+            rem >>= 1;
             i--;
             j--;
         }
