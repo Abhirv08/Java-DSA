@@ -1,23 +1,19 @@
 class Solution {
-    public int findDuplicate(int[] nums) {        
-        sort(nums);
-        for(int i = 0; i < nums.length; i++){
-            if(nums[i] != i+1){
-                return nums[i];
+    public int findDuplicate(int[] nums) {   
+        int duplicate = -1;
+        for (int i = 0; i < nums.length; i++) {
+            int cur = Math.abs(nums[i]);
+            if (nums[cur] < 0) {
+                duplicate = cur;
+                break;
             }
+            nums[cur] *= -1;
         }
-        return -1;
-    }
-    
-     static void sort(int[] nums){
-        for(int i = 0; i< nums.length; ){
-            int correctIndex = nums[i]-1;
-            if (nums[i] == nums[correctIndex]) i++;
-            else{
-                int temp = nums[i];
-                nums[i] = nums[correctIndex];
-                nums[correctIndex] = temp;
-            }
-        }
+        
+        // Restore numbers
+        for (int i = 0; i < nums.length; i++)
+            nums[i] = Math.abs(nums[i]);
+
+        return duplicate;
     }
 }
