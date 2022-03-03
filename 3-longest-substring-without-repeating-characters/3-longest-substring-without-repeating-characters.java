@@ -23,9 +23,6 @@ class Solution {
             }
             max = Math.max(max, r-l);
         }
-        if (!check && counter==s.length()){
-            return s.length();
-        }
         return max;
     }
    
