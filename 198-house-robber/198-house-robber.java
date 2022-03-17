@@ -1,24 +1,25 @@
 class Solution {
     public int rob(int[] nums) {
-        HashMap<Integer, Integer> map = new HashMap<>();
-        return maxTheft(nums, 0, map);
+        int[] arr = new int[nums.length];
+        for(int i = 0; i < nums.length; i++) arr[i] = -1;
+        return maxTheft(nums, 0, arr);
     }
     
-    private int maxTheft(int[] nums, int currentHouse, HashMap<Integer, Integer> map){
+    private int maxTheft(int[] nums, int currentHouse, int[] arr){
         if(currentHouse >= nums.length) return 0;
         
         int currentKey = currentHouse;
         
-        if(map.containsKey(currentKey)){
-            return map.get(currentKey);
+        if(arr[currentKey] >= 0){
+            return arr[currentKey];
         }
         
-        int loot1 = nums[currentKey] + maxTheft(nums, currentKey+2, map);
-        int loot2 = maxTheft(nums, currentKey+1, map);
+        int loot1 = nums[currentKey] + maxTheft(nums, currentKey+2, arr);
+        int loot2 = maxTheft(nums, currentKey+1, arr);
         
         int amountLooted = Math.max(loot1, loot2);
-        map.put(currentKey, amountLooted);
         
+        arr[currentKey] = amountLooted;
         
         return amountLooted;
     }
