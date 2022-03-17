@@ -3,19 +3,23 @@ class Solution {
         if(n==0) return 0;
         if(n <= 2) return 1;
         int[] nums = new int[n+1];
+        for(int i = 0; i < n+1; i++) nums[i] = -1;
         nums[0] = 0; nums[1] = 1; nums[2] = 1;
         return helping(n, nums);
     }
     
     private int helping(int n, int[] nums){
+        if(n==0) return 0;
+        if(n <= 2) return 1;
         
-        for(int i = 3; i <= n; i++){
-            nums[i] = nums[i-1] + nums[i-2] + nums[i-3]; 
+        if(nums[n] >= 0){
+            return nums[n];
         }
         
-        return nums[nums.length-1];
+        int num = helping(n-1, nums) + helping(n-2, nums) + helping(n-3, nums);
         
+        nums[n] = num;
         
-        
+        return num;
     }
 }
