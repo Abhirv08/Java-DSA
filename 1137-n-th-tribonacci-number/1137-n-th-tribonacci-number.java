@@ -1,22 +1,21 @@
 class Solution {
     public int tribonacci(int n) {
-        return helping(n, new HashMap<Integer, Integer>());
-    }
-    
-    private int helping(int n, HashMap<Integer, Integer> map){
         if(n==0) return 0;
         if(n <= 2) return 1;
+        int[] nums = new int[n+1];
+        nums[0] = 0; nums[1] = 1; nums[2] = 1;
+        return helping(n, nums);
+    }
+    
+    private int helping(int n, int[] nums){
         
-        int currentKey = n;
-        
-        if(map.containsKey(currentKey)){
-            return map.get(currentKey);
+        for(int i = 3; i <= n; i++){
+            nums[i] = nums[i-1] + nums[i-2] + nums[i-3]; 
         }
         
-        int num = helping(n-1, map) + helping(n-2, map) + helping(n-3, map);
+        return nums[nums.length-1];
         
-        map.put(currentKey, num);
         
-        return num;
+        
     }
 }
