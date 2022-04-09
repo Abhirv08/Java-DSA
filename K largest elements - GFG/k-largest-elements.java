@@ -48,13 +48,10 @@ class Solution
                 heap.poll();
             }
         }
-        int[] ans = new int[k];
-        for (int i = k-1; i >= 0 ; i--) {
-            ans[i] = heap.poll();
-        }
         ArrayList<Integer> result = new ArrayList<>();
-        for(int i = 0; i < k; i++){
-            result.add(ans[i]);
+        
+        while(!heap.isEmpty()){
+            result.add(0, heap.poll());
         }
         return result;    
         
