@@ -1,13 +1,12 @@
 class Solution {
-    public int[] intersection(int[] nums1, int[] nums2) {
+    public static int[] intersection(int[] nums1, int[] nums2) {
         HashMap<Integer, Boolean> map1 = new HashMap<>();
-        HashMap<Integer, Boolean> map2 = new HashMap<>();
         ArrayList<Integer> ans = new ArrayList<>();
         mapping(nums1, map1);
-        mapping(nums2, map2);
-        for (Map.Entry<Integer, Boolean> e: map1.entrySet()){
-            if (map2.containsKey(e.getKey())){
-                ans.add(e.getKey());
+        for (int i = 0; i < nums2.length; i++) {
+            if (map1.containsKey(nums2[i]) && map1.get(nums2[i])){
+                ans.add(nums2[i]);
+                map1.replace(nums2[i],true, false);
             }
         }
         int[] result = new int[ans.size()];
