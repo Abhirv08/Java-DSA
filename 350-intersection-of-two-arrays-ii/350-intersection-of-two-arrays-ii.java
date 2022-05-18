@@ -1,27 +1,18 @@
 class Solution {
     public int[] intersect(int[] nums1, int[] nums2) {
-        HashMap<Integer, Integer> memo1 = new HashMap<>();        
-        HashMap<Integer, Integer> memo2 = new HashMap<>();
+        HashMap<Integer, Integer> memo = new HashMap<>();   
         for(int i = 0; i < nums1.length; i++){
-            if(memo1.containsKey(nums1[i])){
-                memo1.put(nums1[i], memo1.get(nums1[i])+1);
+            if(memo.containsKey(nums1[i])){
+                memo.put(nums1[i], memo.get(nums1[i])+1);
             }else{
-                memo1.put(nums1[i], 1);
-            }
-        }
-        for(int i = 0; i < nums2.length; i++){
-            if(memo2.containsKey(nums2[i])){
-                memo2.put(nums2[i], memo2.get(nums2[i])+1);
-            }else{
-                memo2.put(nums2[i], 1);
+                memo.put(nums1[i], 1);
             }
         }
         ArrayList<Integer> ans = new ArrayList<>();
-        for(Map.Entry<Integer, Integer> e : memo1.entrySet() ){
-            if(memo2.containsKey(e.getKey())){
-                for(int i = 1; i <= Math.min(e.getValue(), memo2.get(e.getKey())); i++){
-                    ans.add(e.getKey());
-                }
+        for(int i = 0; i < nums2.length; i++){
+            if(memo.containsKey(nums2[i]) && memo.get(nums2[i]) > 0){
+                ans.add(nums2[i]);
+                memo.put(nums2[i], memo.get(nums2[i])-1);
             }
         }
         int[] result = new int[ans.size()];
