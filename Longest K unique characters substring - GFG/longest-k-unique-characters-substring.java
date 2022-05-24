@@ -22,39 +22,32 @@ class GfG {
 
 class Solution {
     public int longestkSubstr(String s, int k) {
-        int[] letters = new int[26];
-        int l = 0;
-        int r = 0;
-        int max = -1;
-        boolean flag = true;
-        while(r < s.length()){
-            if (flag){
-                letters[ s.charAt(r) - 'a' ] += 1;
+        int rel = 0;
+        int longest = -1;
+        int distn = 0;
+        HashMap<Character, Integer> memo = new HashMap<>();
+        for(int acq = 0 ; acq < s.length(); acq++){
+            if(memo.containsKey(s.charAt(acq))){
+                memo.put(s.charAt(acq), memo.get(s.charAt(acq)) + 1);
+            }else{
+                memo.put(s.charAt(acq), 1);
+                distn++;
             }
-           if ( isValid(letters) < k ){
-               r++;
-               flag = true;
-           }else if ( isValid(letters) == k) {
-               max = Math.max(r-l+1, max);
-               r++;
-               flag = true;
-           }else{
-               letters[ s.charAt(l) - 'a' ] -= 1;
-               l++;
-               flag = false;
-           }
+            
+            while(distn > k){
+                if(memo.get(s.charAt(rel)) == 1){
+                    memo.remove(s.charAt(rel));
+                    distn--;
+                }else{
+                    memo.put(s.charAt(rel), memo.get(s.charAt(rel)) - 1);
+                }
+                rel++;
+            }
+            if(distn == k){
+                longest = Math.max(longest, acq - rel + 1);
+            }
         }
-        return max;
+        return longest; 
     }
 
-    static int isValid(int[] letters){
-        int count = 0;
-        for (int i = 0; i < 26; i++) {
-            if (letters[i] != 0){
-                count++;
-            }
-        }
-        return count;
-        
-    }
 }
