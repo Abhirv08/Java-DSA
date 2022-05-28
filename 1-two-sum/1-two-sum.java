@@ -1,13 +1,14 @@
 class Solution {
-    public int[] twoSum(int[] nums, int target) {
+    public int[] twoSum(int[] nums, int k) {
         int[] ans = new int[2];
+        HashMap<Integer, Integer> memo = new HashMap<>();
         for(int i = 0; i < nums.length; i++){
-            for(int j = i+1; j < nums.length; j++){
-                if(nums[i] + nums[j] == target){
-                    ans[0] = i;
-                    ans[1] = j;
-                    return ans;
-                }
+            if(!memo.containsKey(k - nums[i])){
+                memo.put(nums[i], i);
+            }else{
+                ans[0] = memo.get(k - nums[i]);
+                ans[1] = i;
+                break;
             }
         }
         return ans;
