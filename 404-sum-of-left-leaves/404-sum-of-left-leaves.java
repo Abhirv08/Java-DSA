@@ -23,12 +23,13 @@ class Solution {
     private void sum(TreeNode root, int[] ans, boolean flag){
         if(root == null)
             return;
+        if(root.left == null && root.right == null && flag == true)
+            ans[0] += root.val;
+        
         
         if(root.left != null)
             sum(root.left, ans, true);
         
-        if(root.left == null && root.right == null && flag == true)
-            ans[0] += root.val;
         
         if(root.right != null)
             sum(root.right, ans, false);
