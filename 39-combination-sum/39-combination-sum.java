@@ -17,9 +17,11 @@ class Solution {
             return;
         }
         
-        currSubArr.add(cand[ci]);
-        combinationSum(cand, currSubArr, target - cand[ci], ans, ci);
-        currSubArr.remove(currSubArr.size() - 1);
+        if(cand[ci] <= target){
+            currSubArr.add(cand[ci]);
+            combinationSum(cand, currSubArr, target - cand[ci], ans, ci);
+            currSubArr.remove(currSubArr.size() - 1);
+        }
         combinationSum(cand, currSubArr, target, ans, ci+1);
         
         return ;
