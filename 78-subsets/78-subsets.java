@@ -8,9 +8,8 @@ class Solution {
     
     private void subsets(int[] nums, int ci, List<Integer> ip, List<List<Integer>> ans){
         if(ci == nums.length){            
-            List<Integer> temp = new ArrayList<>();
-            for(int num : ip) temp.add(num);
-            ans.add(temp);
+           
+            ans.add(new ArrayList<>(ip));
             return;
         }       
         
