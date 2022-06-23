@@ -34,38 +34,43 @@ class Solution {
     // Function to detect cycle in a directed graph.
     public boolean isCyclic(int V, ArrayList<ArrayList<Integer>> adj) {
         boolean[] visited = new boolean[V];
+        int[] indegree = new int[V];
+        int visitedVertices = 0;
         
-        boolean[] dfsVisited = new boolean[V];
-        
-        for(int currentVertex = 0; currentVertex < V; currentVertex++){
-            if(!visited[currentVertex] && hasCycle(adj, visited, dfsVisited, currentVertex) ){
-                return true;
+        for(int i = 0; i < V; i++){
+            for(int neighbour : adj.get(i)){
+                indegree[neighbour] += 1;
             }
         }
-        return false;
-    }
-    
-    private boolean hasCycle(ArrayList<ArrayList<Integer>> adj, boolean[] visited, boolean[] dfsVisited, int currentVertex){
-        if(dfsVisited[currentVertex])
-            return true;
         
-        if(visited[currentVertex])
-            return false;
-            
-        visited[currentVertex] = true;
         
-        dfsVisited[currentVertex] = true;
+        Queue<Integer> q = new LinkedList<>();
         
-        ArrayList<Integer> neighbours = adj.get(currentVertex);
-        
-        for(int neighbour : neighbours){
-            
-            if(hasCycle(adj, visited, dfsVisited, neighbour))
-                return true;
-            
+        for(int i = 0; i < V; i++){
+            if(indegree[i] == 0){
+                q.add(i);
+            }
         }
         
-        dfsVisited[currentVertex] = false;
-        return false;
+        while(!q.isEmpty()){
+            int node = q.poll();
+            
+            if(visited[node]){
+                continue;
+            }
+            
+            visited[node] = true;
+            visitedVertices += 1;
+            
+            for(int neighbour : adj.get(node)){
+                indegree[neighbour] -= 1;
+                if(indegree[neighbour] == 0){
+                    q.add(neighbour);
+                }
+            }
+        }
+        
+        
+        return !(visitedVertices == V);
     }
 }
