@@ -2,7 +2,7 @@ class Solution {
     public int scheduleCourse(int[][] courses){
         PriorityQueue<Integer> pq = new PriorityQueue<>( (a,b) -> b-a );
         int time = 0;
-        
+        int coursesTaken = 0;
         Arrays.sort(courses, (a, b) -> a[1] == b[1] ? a[0] - b[0] : a[1] - b[1] );
         for(int[] course : courses){
             
@@ -10,6 +10,7 @@ class Solution {
                 if(time + course[0] <= course[1]){
                     pq.add(course[0]);
                     time += course[0];
+                    coursesTaken++;
                 }else{
                     if(pq.peek() > course[0]){
                         time -= pq.poll();
@@ -20,6 +21,6 @@ class Solution {
             }
         }
         
-        return pq.size();
+        return coursesTaken;
     }    
 }
