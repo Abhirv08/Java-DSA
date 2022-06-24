@@ -81,7 +81,9 @@ class Solution
         }
         
         boolean[] visited = new boolean[V];
-        ArrayList<Integer> ans = new ArrayList<>();
+        // ArrayList<Integer> ans = new ArrayList<>();
+        int[] result = new int[V];
+        int index = 0;
         
         // Iterating on the items of queue
         while(!q.isEmpty()){
@@ -92,7 +94,9 @@ class Solution
             }
             
             visited[currVertex] = true;
-            ans.add(currVertex);
+            // ans.add(currVertex);
+            result[index] = currVertex;
+            index++;
             
             for(int neighbour : adj.get(currVertex)){
                 inDegree[neighbour]--;
@@ -101,10 +105,10 @@ class Solution
                 }
             }
         }
-        int[] result = new int[V];
-        for(int i = 0; i < V; i++){
-            result[i] = ans.get(i);
-        }
+        
+        // for(int i = 0; i < V; i++){
+        //     result[i] = ans.get(i);
+        // }
         return result;
     }
 }
