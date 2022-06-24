@@ -19,7 +19,7 @@ class Solution {
         }
         
         int[] ans = new int[v];
-        int index = v-1;
+        int index = 0;
         boolean[] visited = new boolean[v];
         int visitedVertex = 0;
         
@@ -31,7 +31,7 @@ class Solution {
             
             visited[currentVertex] = true;
             ans[index] = currentVertex;
-            index--;
+            index++;
             visitedVertex++;
             
             for(int neighbour : adj.get(currentVertex)){
@@ -56,7 +56,7 @@ class Solution {
             int destination = edges[0];
             int source = edges[1];
             
-            graph.get(destination).add(source);
+            graph.get(source).add(destination);
         }
         return graph;
     }
