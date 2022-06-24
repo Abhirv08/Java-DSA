@@ -62,53 +62,43 @@ class Solution
     //Function to return list containing vertices in Topological order. 
     static int[] topoSort(int V, ArrayList<ArrayList<Integer>> adj) 
     {
-        int[] inDegree = new int[V];
+       boolean[] visited = new boolean[V];
+       boolean[] recStack = new boolean[V];
+       ArrayList<Integer> ans = new ArrayList<>();
+       
+       for(int currentVertex = 0; currentVertex < V; currentVertex++){
+           if(!visited[currentVertex]){
+               if(dfs(adj, currentVertex, visited, recStack, ans)){
+                   return new int[0];
+               }
+           }
+       }
+       
+       int[] result = new int[V];
+       for(int i = 0; i < V; i++){
+           result[i] = ans.get(V-i-1);
+       }
+       return result;
+    }
+    
+    static boolean dfs(ArrayList<ArrayList<Integer>> adj, int currentVertex, boolean[] visited,boolean[] recStack, ArrayList<Integer> ans){
         
-        // Finding indegree
-        for(int i = 0; i < V; i++){
-            for(int currVertex : adj.get(i)){
-                inDegree[currVertex]++;
-            }
-        }
+        visited[currentVertex] = true;
+        recStack[currentVertex] = true;
         
-        Queue<Integer> q = new LinkedList<>();
-        
-        // adding vertex to queue with value 0
-        for(int vertex = 0; vertex < V; vertex++){
-            if(inDegree[vertex] == 0){
-                q.add(vertex);
-            }
-        }
-        
-        boolean[] visited = new boolean[V];
-        // ArrayList<Integer> ans = new ArrayList<>();
-        int[] result = new int[V];
-        int index = 0;
-        
-        // Iterating on the items of queue
-        while(!q.isEmpty()){
-            int currVertex = q.poll();
-            
-            if(visited[currVertex]){
-                continue;
-            }
-            
-            visited[currVertex] = true;
-            // ans.add(currVertex);
-            result[index] = currVertex;
-            index++;
-            
-            for(int neighbour : adj.get(currVertex)){
-                inDegree[neighbour]--;
-                if(inDegree[neighbour] == 0){
-                    q.add(neighbour);
+        for(int currNeighbour : adj.get(currentVertex)){
+            if(!visited[currNeighbour]){
+                if(dfs(adj, currNeighbour, visited,recStack, ans)){
+                    return true;
                 }
+            }else if(recStack[currNeighbour]){
+                return true;
             }
         }
         
-        // for(int i = 0; i < V; i++){
-        //     result[i] = ans.get(i);
-        // }
-        return result;
+        ans.add(currentVertex);
+        recStack[currentVertex] = false;
+        
+        return false;   
     }
 }
