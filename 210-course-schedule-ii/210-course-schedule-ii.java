@@ -1,10 +1,14 @@
 class Solution {
-    public int[] findOrder(int v, int[][] adj) {
+    public int[] findOrder(int v, int[][] prerequisites) {
+        
+        ArrayList<ArrayList<Integer>> adj = constructGraph(v, prerequisites);
         int[] inDegree = new int[v];
         
         // find indegree of each courses
-        for(int i = 0; i < adj.length; i++){
-            inDegree[adj[i][1]]++;
+        for(int i = 0; i < v; i++){
+            for(int course : adj.get(i)){
+                inDegree[course]++;
+            }
         }
         
         Queue<Integer> q = new LinkedList<>();
@@ -30,16 +34,30 @@ class Solution {
             index--;
             visitedVertex++;
             
-            for(int i = 0; i < adj.length; i++){
-                if(adj[i][0] == currentVertex){
-                    inDegree[adj[i][1]]--;
-                    if(inDegree[adj[i][1]] == 0){
-                        q.add(adj[i][1]);
+            for(int neighbour : adj.get(currentVertex)){
+                inDegree[neighbour]--;
+                    if(inDegree[neighbour] == 0){
+                        q.add(neighbour);
                     }
-                }
             }
         }     
         
         return visitedVertex == v ? ans : new int[0];
+    }
+    
+     private ArrayList<ArrayList<Integer>> constructGraph(int v, int[][] prerequisites ){
+        ArrayList<ArrayList<Integer>> graph = new ArrayList<>();
+        
+        for(int i = 0; i < v; i++){
+            graph.add(new ArrayList<>());
+        }
+        
+        for(int[] edges : prerequisites){
+            int destination = edges[0];
+            int source = edges[1];
+            
+            graph.get(destination).add(source);
+        }
+        return graph;
     }
 }
