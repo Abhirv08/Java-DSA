@@ -1,3 +1,13 @@
+class Pair{
+    int vertex;
+    int color;
+    
+    Pair(int vertex, int color){
+        this.vertex = vertex;
+        this.color = color;
+    }
+}
+
 class Solution {
     public boolean isBipartite(int[][] adj) {
         int v = adj.length;
@@ -6,7 +16,7 @@ class Solution {
         
         for(int currentVertex = 0; currentVertex < v; currentVertex++){
             if(visited[currentVertex] == -1){
-                if(!dfs(adj, currentVertex, 0, visited)){
+                if(!isPossible(adj, 0, currentVertex, visited)){
                     return false;
                 }
             }
@@ -15,20 +25,25 @@ class Solution {
         return true;
     }
     
-    private boolean dfs(int[][] adj, int currentVertex, int color, int[] visited){  
-        visited[currentVertex] = color;
-
-        for(int neighbour : adj[currentVertex]){
-            if(visited[neighbour] == -1){
-                if(!dfs(adj, neighbour, color == 0 ? 1 : 0, visited)){
+    private boolean isPossible(int[][] adj, int currentColor, int currentVertex, int[] visited){
+        Queue<Pair> q = new LinkedList<>();
+        q.add(new Pair(currentVertex, currentColor));
+        
+        while(!q.isEmpty()){
+            Pair currentPair = q.remove();
+            int currVertex = currentPair.vertex;
+            int currColor = currentPair.color;
+            
+            visited[currVertex] = currColor;
+            for(int currentNeigh : adj[currVertex]){
+                if(visited[currentNeigh] == -1){
+                    q.add(new Pair(currentNeigh, 1 - currColor));
+                }else if(visited[currentNeigh] == currColor){
                     return false;
                 }
-            }else if (visited[neighbour] == color){
-                return false;
-            }
+            }  
         }
-
+        
         return true;
     }
-    
 }
