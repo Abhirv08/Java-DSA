@@ -25,6 +25,24 @@ class GFG {
 // } Driver Code Ends
 
 
+class Pair implements Comparable<Pair>{
+    int num;
+    int occurance;
+
+    Pair(int num, int occurance){
+        this.num = num;
+        this.occurance = occurance;
+    }
+
+    public int compareTo(Pair p){
+        if(p.occurance == this.occurance){
+            return p.num - this.num;
+        }
+
+        return p.occurance - this.occurance;
+    }
+}
+
 class Solution {
     public int[] topK(int[] nums, int k) {
         HashMap<Integer, Integer> memo = new HashMap<>();
@@ -37,25 +55,16 @@ class Solution {
                 uniques++;
             }
         }
-
-        int[][] memo_arr = new int[uniques][2];
-        int index = 0;
+        
+        PriorityQueue<Pair> pq = new PriorityQueue<>();
         for(Map.Entry<Integer, Integer> e : memo.entrySet()){
-            memo_arr[index][0] = e.getKey();
-            memo_arr[index][1] = e.getValue();
-            index++;
+            pq.add(new Pair(e.getKey(), e.getValue()));
         }
 
-        Arrays.sort(memo_arr, new Comparator<int[]>() {
-
-            public int compare(int[] o1, int[] o2) {
-                return o1[1] == o2[1] ? o2[0] - o1[0] : o2[1] - o1[1];
-            }
-        });
 
         int[] ans = new int[k];
         for(int i = 0; i < k; i++){
-            ans[i] = memo_arr[i][0];
+            ans[i] = pq.remove().num;
         }
         return ans;
     }
