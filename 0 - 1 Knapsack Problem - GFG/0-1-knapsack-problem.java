@@ -48,30 +48,35 @@ class gfg
 class Solution 
 { 
     //Function to return max value that can be put in knapsack of capacity W.
-    static int knapSack(int cap, int wt[], int val[], int n) 
-    { 
-    
-         return maxValue(cap, wt, val, 0, new HashMap<String, Integer>() );
-    } 
-    
-    static int maxValue(int w, int[] wt, int[] val, int i, HashMap<String, Integer> map){
-        if(i == wt.length) return 0;
+    static int knapSack(int cap, int wt[], int val[], int n){ 
         
-        String currentKey = Integer.toString(w) + "-" + Integer.toString(i);
-        if(map.containsKey(currentKey)){
-            return map.get(currentKey);
-        }
-        
-        int weightTaken = 0;
-        if(w-wt[i] >= 0){
-            weightTaken = val[i] + maxValue(w-wt[i], wt, val, i+1, map);
-        }
-        int weightNotTaken = maxValue(w, wt, val, i+1, map);
-        
-        map.put(currentKey,Math.max(weightTaken, weightNotTaken) );
-        
-        return Math.max(weightTaken, weightNotTaken);
+        return helping(cap, wt, val, n, 0, new HashMap<>());
     }
+    
+    private static int helping(int cap, int[] wt, int[] val, int n, int index, HashMap<String, Integer> memo ){
+        if(index >= n || cap == 0){
+            return 0;
+        }
+        
+        String currKey = index + ";" + cap;
+        
+        if(memo.containsKey(currKey)){
+            return memo.get(currKey);
+        }
+        
+        
+        if(wt[index] > cap){
+            return helping(cap, wt, val, n, index + 1, memo);
+        }
+        
+        int withConsidering = val[index] + helping(cap - wt[index], wt, val, n, index+1, memo);
+        int withoutConsidering = helping(cap, wt, val, n, index + 1, memo);
+        
+        memo.put(currKey, Math.max(withConsidering, withoutConsidering));
+        
+        return Math.max(withConsidering, withoutConsidering);
+    }
+
 }
 
 
