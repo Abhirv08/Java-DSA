@@ -50,27 +50,27 @@ class Solution
     //Function to return max value that can be put in knapsack of capacity W.
     static int knapSack(int cap, int wt[], int val[], int n){ 
         
-        return helping(cap, wt, val, n, 0, new HashMap<>());
+        return helping(cap, wt, val, n, new HashMap<>());
     }
     
-    private static int helping(int cap, int[] wt, int[] val, int n, int index, HashMap<String, Integer> memo ){
-        if(index >= n || cap == 0){
+    private static int helping(int cap, int[] wt, int[] val, int n, HashMap<String, Integer> memo ){
+        if(n == 0 || cap == 0){
             return 0;
         }
         
-        String currKey = index + ";" + cap;
+        String currKey = n + ";" + cap;
         
         if(memo.containsKey(currKey)){
             return memo.get(currKey);
         }
         
         
-        if(wt[index] > cap){
-            return helping(cap, wt, val, n, index + 1, memo);
+        if(wt[n - 1] > cap){
+            return helping(cap, wt, val, n - 1, memo);
         }
         
-        int withConsidering = val[index] + helping(cap - wt[index], wt, val, n, index+1, memo);
-        int withoutConsidering = helping(cap, wt, val, n, index + 1, memo);
+        int withConsidering = val[n - 1] + helping(cap - wt[n - 1], wt, val, n - 1, memo);
+        int withoutConsidering = helping(cap, wt, val, n - 1,  memo);
         
         memo.put(currKey, Math.max(withConsidering, withoutConsidering));
         
