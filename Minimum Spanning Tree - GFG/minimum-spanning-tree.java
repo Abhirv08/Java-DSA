@@ -44,49 +44,101 @@ class DriverClass
     }
 }// } Driver Code Ends
 
-
-// User function Template for Java
-class Pair implements Comparable<Pair>{
-    int vertex, cost;
+class Edge implements Comparable<Edge>{
+    int src, dest, weight;
     
-    Pair(int vertex, int cost){
-        this.vertex = vertex;
-        this.cost = cost;
+    Edge(int src, int dest, int weight){
+        this.src = src;
+        this.dest = dest;
+        this.weight = weight;
     }
     
-    public int compareTo(Pair p){
-        return this.cost - p.cost;
+    public int compareTo(Edge e){
+        return this.weight - e.weight;
     }
+    
 }
+
 class Solution
 {
     //Function to find sum of weights of edges of the Minimum Spanning Tree.
     static int spanningTree(int V, ArrayList<ArrayList<ArrayList<Integer>>> adj) 
     {
-        // Add your code here
+        List<Edge> edges = getEdges(V, adj);
+        
+        Collections.sort(edges);
+        
+        int[] parent = new int[V];
+        
+        for(int i = 0; i < V; i++){
+            parent[i] = i;
+        }
+        
+        int[] rank = new int[V];
+        
         int ans = 0;
-        int[] costs = new int[V];
-        Arrays.fill(costs, -1);
-        
-        PriorityQueue<Pair> pq = new PriorityQueue<>();
-        pq.add(new Pair(0, 0));
-        
-        while(!pq.isEmpty()){
-            Pair currentPair = pq.remove();
-            int currentVertex = currentPair.vertex;
-            int currentCost = currentPair.cost;
+        int edgesTaken = 0;
+        int i = 0;
+        while(edgesTaken < V-1 && i < edges.size()){
+            Edge edge = edges.get(i);
+            int a = edge.src;
+            int b = edge.dest;
+            int weight = edge.weight;
             
-            if(costs[currentVertex] != -1)
-                continue;
+            int rootA = find(parent, a);
+            int rootB  = find(parent, b);
             
-            costs[currentVertex] = currentCost;
-            ans += currentCost;
-            
-            for(ArrayList<Integer> currentNeigh : adj.get(currentVertex)){
-                pq.add(new Pair(currentNeigh.get(0), currentNeigh.get(1)));
+            if(rootA != rootB){
+                union(parent, a, b, rank);
+                ans += weight;
+                edgesTaken++;
             }
+            i++;
         }
         
         return ans;
+    }
+    
+    static int find(int[] parent, int vertex){
+        if(parent[vertex] == vertex){
+            return vertex;
+        }
+    
+        parent[vertex] = find(parent, parent[vertex]);
+    
+        return parent[vertex];
+    }
+
+    static void union(int[] parent, int a, int b, int[] rank){
+        int rootA = find(parent, a);
+        int rootB = find(parent, b);
+    
+        if(rank[rootA] < rank[rootB])
+            parent[rootA] = rootB;
+        else if(rank[rootA] > rank[rootB])
+            parent[rootB] = rootA;
+        else{
+            parent[rootA] = rootB;
+            rank[rootB]++;
+        }
+        return;
+    }
+    
+    static List<Edge> getEdges(int v, ArrayList<ArrayList<ArrayList<Integer>>> adj){
+        List<Edge> edges = new ArrayList<>();
+        
+        
+        for(int i = 0; i<v; i++){
+            ArrayList<ArrayList<Integer>> neighbours = adj.get(i);
+            for(ArrayList<Integer> currNeigh : neighbours){
+                int src = i;
+                int dest = currNeigh.get(0);
+                int weight = currNeigh.get(1);
+                
+                edges.add(new Edge(src, dest, weight));
+            }
+        }
+        
+        return edges;
     }
 }
