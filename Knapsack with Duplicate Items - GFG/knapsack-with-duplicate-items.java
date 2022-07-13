@@ -29,26 +29,41 @@ class GFG{
 }// } Driver Code Ends
 
 
-//User function Template for Java
-
 class Solution{
-    static int knapSack(int N, int W, int val[], int wt[])
-    {
+    static int knapSack(int N, int W, int val[], int wt[]){
+        // int[][] memo = new int[N+1][W+1];
+        
+        // for(int[] arr : memo){
+        //     Arrays.fill(arr, -1);
+        // }
+        
+        return uKnapsack(N, W, val, wt);
+    }
+    
+    static int uKnapsack(int N, int W, int[] val, int[] wt){
         int[][] memo = new int[N+1][W+1];
         
-        for(int[] arr : memo){
-            Arrays.fill(arr, -1);
+        // for(int i = 0; i < N+1; i++){
+        //     memo[i][0] = 1;
+        // }
+        
+        for(int i = 1; i < N+1; i++){
+            for(int j = 1; j < W+1; j++){
+                if(wt[i-1] > j){
+                    memo[i][j] = memo[i-1][j];
+                }else{
+                    memo[i][j] = Math.max(val[i-1] + memo[i][j - wt[i-1]], memo[i-1][j] );
+                }
+            }
         }
         
-        return unboundedKnapsack(N, W, val, wt, memo);
+        return memo[N][W];
     }
     
     static int unboundedKnapsack(int N, int W, int[] val, int[] wt, int[][] memo){
         if(W == 0 || N == 0){
             return 0;
         }
-        
-        
         
         if(memo[N][W] != -1){
             return memo[N][W];
