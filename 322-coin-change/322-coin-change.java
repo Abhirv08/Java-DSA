@@ -10,9 +10,6 @@ class Solution {
             memo[0][j] = Integer.MAX_VALUE - 1;
         }
         
-        for(int j = 1; j < amount+1; j++){
-            memo[1][j] = coins[0] % j == 0 ? coins[0]/j : Integer.MAX_VALUE - 1;
-        }
         
         for(int i = 1; i < n+1; i++){
             for(int j = 1; j < amount+1; j++){
