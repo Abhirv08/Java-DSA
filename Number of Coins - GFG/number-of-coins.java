@@ -28,11 +28,22 @@ class Solution{
 	public int minCoins(int coins[], int M, int V){ 
 	    int[][] memo = new int[M + 1][V+1];
 	    
-	    for(int[] arr : memo){
-	        Arrays.fill(arr, -1);
+	    for(int j = 1; j < V+1; j++){
+	        memo[0][j] = (int)1e7;
 	    }
 	    
-	    int ans = minCoins(coins, M, V, memo);
+	    for(int i = 1; i < M+1; i++){
+	        for(int j =1; j < V+1; j++){
+	            if(coins[i-1] > j){
+	                memo[i][j] = memo[i-1][j];
+	           }else{
+	               memo[i][j] = Math.min(memo[i-1][j], 1 + memo[i][j - coins[i-1]]);
+	           }
+	        }
+	    }
+	    
+	    int ans = memo[M][V];
+	   // int ans = minCoins(coins, M, V, memo);
 	    return ans == (int) 1e7 ? -1 : ans;
 	} 
 	
