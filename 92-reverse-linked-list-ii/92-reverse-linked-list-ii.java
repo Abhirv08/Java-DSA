@@ -10,34 +10,56 @@
  */
 class Solution {
     public ListNode reverseBetween(ListNode head, int left, int right) {
-        if(head.next == null || (right-left)== 0){
+        if(head == null || left == right){
             return head;
         }
-        ListNode prev = null;
-        ListNode curr = head;
-        if(left==1){
-            while(left < right){
-                ListNode nextNode = curr.next;
-                curr.next = nextNode.next;
-                nextNode.next = head;
-                head = nextNode;
-                left++;
-            }
-            return head;
-        }
-        while(left > 1){
+        
+        ListNode prev = null, curr = head, ahead = head.next;
+        ListNode leftNode = null, rightNode = null;
+        ListNode leftJoining = null, rightJoining = null;
+        int nodeNo = 1;
+        while(curr != null){
+            if(leftNode == null && nodeNo != left){
+                prev = curr;
+                curr = ahead;
+                if(ahead != null){
+                    ahead = ahead.next;
+                }
+                nodeNo++;
+                continue;
+            }else if (leftNode == null && nodeNo == left){
+                leftJoining = prev;
+                leftNode = curr;
+            }else if(leftNode != null && rightNode == null){
+                curr.next = prev;
+                if(nodeNo == right){
+                    rightJoining = ahead;
+                    rightNode = curr;
+                    break;
+                }
+            }            
             prev = curr;
-            curr = curr.next;
-            left--;
-            right--;
+            curr = ahead;
+            if(ahead != null){
+                ahead = ahead.next;
+            }
+            nodeNo++;
         }
-        while(left < right){
-            ListNode nextNode = curr.next;
-            curr.next = curr.next.next;
-            nextNode.next = prev.next;
-            prev.next = nextNode;
-            left++;
+        
+        if(leftJoining != null && rightJoining != null){
+            leftJoining.next = rightNode;
+            leftNode.next = rightJoining;
+        }else if(leftJoining == null && rightJoining != null){
+            leftNode.next = ahead;
+            head = curr;
+        }else if(leftJoining != null && rightJoining == null){
+            leftJoining.next = rightNode;
+            leftNode.next = null;
+        }else{
+            head = curr;
+            leftNode.next = null;
         }
+        
         return head;
     }
 }
