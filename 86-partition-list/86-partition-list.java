@@ -14,38 +14,29 @@ class Solution {
             return head;
         }
         
-        Queue<Integer> q = new LinkedList<>();
-        Queue<Integer> pq = new LinkedList<>();
         ListNode temp = head;
+        
+        ListNode bf_head = new ListNode(0);
+        ListNode before = bf_head;
+        
+        ListNode af_head = new ListNode(0);
+        ListNode after = af_head;
+        
         while(temp != null){
-            q.add(temp.val);
             if(temp.val < x){
-                pq.add(temp.val);
+                before.next = temp;
+                before = before.next;
+            }else{
+                after.next = temp;
+                after = after.next;
             }
+            
             temp = temp.next;
         }
         
-        ListNode head2 = null;
-        boolean flag = false;
-        if(!pq.isEmpty()){
-            q.remove(pq.peek());
-            head2 = new ListNode(pq.poll());
-            temp = head2;
-            flag = true;
-            while(!pq.isEmpty()){
-                q.remove(pq.peek());
-                temp.next = new ListNode(pq.poll());
-                temp = temp.next;
-            }
-            
-            while(!q.isEmpty()){
-                temp.next = new ListNode(q.poll());
-                temp = temp.next;
-            }
-        }
+        before.next = af_head.next;
+        after.next = null;
         
-        
-        
-        return flag ? head2 : head;
+        return bf_head.next;
     }
 }
