@@ -15,7 +15,11 @@ class Solution {
     }
     
     private TreeNode recursiveTree(TreeNode root, TreeNode p, TreeNode q){
-        if(root == null || root == p || root == q){
+        if(root == null){
+            return null;
+        }
+        
+        if(root == p || root == q){
             return root;
         }
         
@@ -23,14 +27,18 @@ class Solution {
         
         TreeNode right = recursiveTree(root.right, p,  q);
         
-        if(left == null){
+        if(left != null && right != null){
+            return root;
+        }
+        
+        if(left == null && right != null){
             return right;
         }
         
-        if(right == null){
+        if(left != null && right == null){
             return left;
         }
         
-        return root;
+        return null;
     }
 }
