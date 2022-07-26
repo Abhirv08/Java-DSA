@@ -9,28 +9,28 @@
  */
 class Solution {
     
-    TreeNode ans;
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-        ans = null;
-        recursiveTree(root, p, q);
-        return ans;
+        
+        return recursiveTree(root, p, q);
     }
     
-    private boolean recursiveTree(TreeNode root, TreeNode p, TreeNode q){
-        if(root == null){
-            return false;
+    private TreeNode recursiveTree(TreeNode root, TreeNode p, TreeNode q){
+        if(root == null || root == p || root == q){
+            return root;
         }
         
-        int left = recursiveTree(root.left, p, q) ? 1 : 0;
+        TreeNode left = recursiveTree(root.left, p, q);
         
-        int right = recursiveTree(root.right, p,  q) ? 1 : 0;
+        TreeNode right = recursiveTree(root.right, p,  q);
         
-        int mid = (root == p || root == q) ? 1 : 0;
-        
-        if(mid + left + right >= 2){
-            ans = root;
+        if(left == null){
+            return right;
         }
         
-        return (mid + left + right) > 0;
+        if(right == null){
+            return left;
+        }
+        
+        return root;
     }
 }
