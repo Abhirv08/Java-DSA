@@ -23,27 +23,21 @@ class Solution {
             return ;
         }
         
-        Stack<TreeNode> st = new Stack<>();
-        st.push(root);
-        
-        while(!st.isEmpty()){
-            TreeNode curr = st.pop();
-            
-            if(curr.right != null){
-                st.push(curr.right);
-            }
-            
-            if(curr.left != null){
-                st.push(curr.left);
-            }
-            
-            if(!st.isEmpty()){
-                curr.right = st.peek();
-            }
-            curr.left = null;
-        }
+        flattening(root);
                 
     }
     
-    
+    TreeNode prev = null;
+    private void flattening(TreeNode root){
+        if(root == null){
+            return ;
+        }
+        
+        flattening(root.right);
+        flattening(root.left);
+        
+        root.right = prev;
+        root.left = null;
+        prev = root;
+    }
 }
