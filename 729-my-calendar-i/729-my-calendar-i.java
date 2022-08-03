@@ -1,13 +1,9 @@
-class Pair implements Comparable<Pair>{
+class Pair{
     int start, end;
     
     public Pair(int start, int end){
         this.start = start;
         this.end = end;
-    }
-    
-    public int compareTo(Pair p){
-        return this.start - p.start;
     }
 }
 
@@ -22,8 +18,6 @@ class MyCalendar {
             events.add(new Pair(start, end));
             return true;
         }
-        
-        Collections.sort(events);
         
         for(Pair p : events){
             int s = p.start;
