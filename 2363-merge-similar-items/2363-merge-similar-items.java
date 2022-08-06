@@ -1,24 +1,21 @@
 class Solution {
     public List<List<Integer>> mergeSimilarItems(int[][] items1, int[][] items2) {
-        HashMap<Integer, Integer> memo1 = new HashMap<>();
         
-        for(int[] item : items1){
-            memo1.put(item[0], item[1]);
-        }
         
-        HashMap<Integer, Integer> memo2 = new HashMap<>();
+        HashMap<Integer, Integer> memo = new HashMap<>();
         
         for(int[] item : items2){
-            memo2.put(item[0], item[1]);
+            memo.put(item[0], item[1]);
         }
+        
         List<List<Integer>> list = new ArrayList<>();
         
-        for(Map.Entry<Integer, Integer> e : memo1.entrySet()){
-            int val = e.getKey();
-            int wt = e.getValue();
-            if(memo2.containsKey(val)){
-                wt += memo2.get(val);
-                memo2.remove(val);
+        for(int[] item : items1){
+            int val = item[0];
+            int wt = item[1];
+            if(memo.containsKey(val)){
+                wt += memo.get(val);
+                memo.remove(val);
             }
             
             List<Integer> temp = new ArrayList<>();
@@ -27,7 +24,7 @@ class Solution {
             list.add(temp);
         }
         
-        for(Map.Entry<Integer, Integer> e : memo2.entrySet()){
+        for(Map.Entry<Integer, Integer> e : memo.entrySet()){
             int val = e.getKey();
             int wt = e.getValue();
             
