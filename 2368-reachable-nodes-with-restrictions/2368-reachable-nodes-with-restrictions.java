@@ -1,6 +1,5 @@
 class Solution {
     int ans;
-    int nodesVisited;
     public int reachableNodes(int n, int[][] edges, int[] restricted) {
         ArrayList<ArrayList<Integer>> adj = constructGraph(edges, n);        
 
@@ -15,12 +14,7 @@ class Solution {
         
         ans = 0;
         
-        nodesVisited = 0;
-        if(!set.contains(0)){
-            dfs(adj, 0, visited, set);
-        }
-        ans = Math.max(ans, nodesVisited);
-        
+        dfs(adj, 0, visited, set);        
         
         return ans;
     }
@@ -31,7 +25,7 @@ class Solution {
         }
         
         visited[currNode] = true;
-        nodesVisited++;
+        ans++;
         
         for(int neigh : adj.get(currNode)){
             if(!set.contains(neigh)){
