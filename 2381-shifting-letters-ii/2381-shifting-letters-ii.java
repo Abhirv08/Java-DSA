@@ -1,6 +1,6 @@
 class Solution {
     public String shiftingLetters(String s, int[][] shifts) {
-        StringBuilder str = new StringBuilder(s);
+        char[] str = s.toCharArray();
         
         int[] prefixArr = new int[s.length() + 1];
         
@@ -17,9 +17,9 @@ class Solution {
             if(newChar < 0){
                 newChar += 26;
             }
-            str.replace(i, i+1, Character.toString((char)('a' + newChar)));
+            str[i] = (char)('a' + newChar);
         }
         
-        return str.toString();
+        return new String(str);
     }
 }
