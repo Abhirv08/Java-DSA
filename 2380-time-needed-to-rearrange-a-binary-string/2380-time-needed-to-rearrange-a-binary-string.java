@@ -1,33 +1,29 @@
 class Solution {
     public int secondsToRemoveOccurrences(String s) {
         int seconds = 0;
-
-        while(s.contains("01")){
-            StringBuilder str = new StringBuilder();
-            int acq = 0, rel = 0;
-            while (acq <= s.length()) {
-                String temp = s.substring(rel, acq);
-                if (temp.length() < 2) {
-                    acq++;
-                } else {
-                    if (temp.equals("01")) {
-                        str.append("10");
-                        rel = acq;
-                    } else {
-                        str.append(s.substring(rel, rel + 1));
-                        rel++;
-                    }
-                    acq++;
+        int n = s.length();
+        StringBuilder str = new StringBuilder(s);
+        while(true){
+            boolean flag = false;
+            for(int i = 0; i < n - 1;){
+                if(str.charAt(i) == '0' && str.charAt(i + 1) == '1'){
+                    str.replace(i, i+1, "1");
+                    str.replace(i+1, i + 2, "0");
+                    flag = true;
+                    i += 2;
+                }else{
+                    i++;
                 }
             }
-            if(acq == s.length() + 1 && rel == s.length() - 1) str.append(s.substring(rel, acq - 1));
-            s = str.toString();
-            seconds++;
+            
+            if(!flag){
+                break;
+            }else{
+                seconds++;
+            }
         }
         
-
+        
         return seconds;
     }
-    
-    
 }
