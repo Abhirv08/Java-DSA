@@ -41,7 +41,7 @@ class Solution {
                 ans.add(avg);
                 sum = 0;
                 levelSize = q.size();
-                currSize = levelSize;
+                currSize = q.size();
             }            
         }
         
