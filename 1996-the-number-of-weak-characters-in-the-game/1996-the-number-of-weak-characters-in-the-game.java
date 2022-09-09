@@ -12,23 +12,15 @@ class Solution {
         }
         int ans = 0;
         int max_defence = pq.peek()[1];
-        int max_attack = pq.peek()[0];
         
         while(!pq.isEmpty()){
             int[] prop = pq.poll();
             
-            if(prop[0] == max_attack){   // if attack of polled == attack of next
+            if(prop[1] < max_defence){   // if defence of popped < defence of next
+                ans++;
+            }else{     // if defence of popped >= defence of next
                 max_defence = Math.max(max_defence, prop[1]);
-                continue;
-            }else{
-                if(prop[1] < max_defence){   // if defence of popped < defence of next
-                    ans++;
-                }else{     // if defence of popped >= defence of next
-                    max_defence = Math.max(max_defence, prop[1]);
-                    continue;
-                }
-            }
-            
+            }            
         }
         
         return ans;
