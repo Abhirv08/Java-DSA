@@ -4,12 +4,12 @@ class Solution {
         
         int[][] dp = new int[a.length+1][b.length+1];
         
-        for(int i = a.length-1; i >= 0; i--){
-            for(int j = b.length-1; j>=0; j--){
-                if(a[i] ==b[j]){
-                    dp[i][j] = 1 + dp[i+1][j+1];
-                    if(dp[i][j] > ans) ans = dp[i][j];
+        for(int i = 1; i < a.length+1; i++){
+            for(int j = 1; j < b.length+1; j++){
+                if(a[i-1] ==b[j-1]){
+                    dp[i][j] = 1 + dp[i-1][j-1];
                 }
+                ans = Math.max(ans, dp[i][j]);
             }
         }
         
