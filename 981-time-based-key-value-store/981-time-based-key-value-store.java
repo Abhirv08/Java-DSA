@@ -1,28 +1,48 @@
 class TimeMap {
-    HashMap<String, TreeMap<Integer, String>> map;
+    HashMap<String, ArrayList<Pair<Integer, String>>> keyTimeMap;
+    
     public TimeMap() {
-        map = new HashMap<>();
+        keyTimeMap = new HashMap();
     }
-
+    
     public void set(String key, String value, int timestamp) {
-        if(!map.containsKey(key)){
-            map.put(key, new TreeMap<>());
+        if (!keyTimeMap.containsKey(key)) {
+            keyTimeMap.put(key, new ArrayList());
         }
-        map.get(key).put(timestamp, value);
+        
+        // Store '(timestamp, value)' pair in 'key' bucket.
+        keyTimeMap.get(key).add(new Pair(timestamp, value));
     }
-
+    
     public String get(String key, int timestamp) {
-        if(!map.containsKey(key)){
+        // If the 'key' does not exist in map we will return empty string.
+        if (!keyTimeMap.containsKey(key)) {
             return "";
         }
         
-        Integer floorKey = map.get(key).floorKey(timestamp);
+        if (timestamp < keyTimeMap.get(key).get(0).getKey()) {
+            return "";
+        }
         
-        if (floorKey != null) {
-            return map.get(key).get(floorKey);
+        // Using binary search on the list of pairs.
+        int left = 0;
+        int right = keyTimeMap.get(key).size();
+        
+        while (left < right) {
+            int mid = (left + right) / 2;
+            if (keyTimeMap.get(key).get(mid).getKey() <= timestamp) {
+                left = mid + 1;
+            } else {
+                right = mid;
+            }
         }
 
-        return "";
+        // If iterator points to first element it means, no time <= timestamp exists.
+        if (right == 0) {
+            return "";
+        }
+                
+        return keyTimeMap.get(key).get(right - 1).getValue();
     }
 }
 
