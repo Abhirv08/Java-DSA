@@ -1,27 +1,24 @@
 class MyCalendarTwo {
-    private ArrayList<int[]> events;
-    private ArrayList<int[]> doubleBooking;
+    TreeMap<Integer, Integer> map;
     public MyCalendarTwo() {
-        this.events = new ArrayList<>();
-        this.doubleBooking = new ArrayList<>();
-
+        map = new TreeMap<>();
     }
     
     public boolean book(int start, int end) {
-        for(int[] e: doubleBooking){
-            if(start < e[1] && end > e[0]){
+        map.put(start, map.getOrDefault(start, 0) + 1);
+        map.put(end, map.getOrDefault(end, 0) - 1);
+        
+        int events = 0;
+        
+        for(int key: map.keySet()){
+            events += map.get(key);
+            
+            if(events > 2){
+                map.put(start, map.getOrDefault(start, 0) - 1);
+                map.put(end, map.getOrDefault(end, 0) + 1);
                 return false;
             }
         }
-        
-        for(int[] e: events){
-            // if there is double booking
-            if(start < e[1] && end > e[0]){
-                doubleBooking.add(new int[]{Math.max(start, e[0]), Math.min(end, e[1])});
-            }            
-        }
-        
-        events.add(new int[]{start, end});
         
         return true;
     }
