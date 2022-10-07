@@ -1,34 +1,18 @@
-class Pair{
-    int start, end;
-    
-    public Pair(int start, int end){
-        this.start = start;
-        this.end = end;
-    }
-}
-
 class MyCalendar {
-    ArrayList<Pair> events;
+    TreeMap<Integer, Integer> map;
     public MyCalendar() {
-        events = new ArrayList<>();
+        map = new TreeMap<>();
     }
     
     public boolean book(int start, int end) {
-        if(events.size() == 0){
-            events.add(new Pair(start, end));
-            return true;
+        Integer floor =  map.floorKey(start);
+        Integer ceil  = map.ceilingKey(start);
+        
+        if(floor != null && map.get(floor) > start || ceil != null && end > ceil){
+            return false;
         }
         
-        for(Pair p : events){
-            int s = p.start;
-            int e = p.end;
-            
-            if(s < end && start < e){
-                return false;
-            }
-        }
-        
-        events.add(new Pair(start, end)); 
+        map.put(start, end);
         
         return true;
     }
