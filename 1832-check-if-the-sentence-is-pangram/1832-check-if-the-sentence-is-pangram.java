@@ -6,16 +6,12 @@ class Solution {
             return false;
         }
         
-        int[] letters = new int[26];
+        HashSet<Character> set = new HashSet<>();
         
-        for(char ch : sentence.toCharArray()){
-            letters[ch - 'a']++;
+        for(int i = 0; i < n; i++){
+            set.add(sentence.charAt(i));
         }
         
-        for(int i = 0; i < 26; i++){
-            if(letters[i] == 0) return false;
-        }
-        
-        return true;
+        return set.size() == 26;
     }
 }
