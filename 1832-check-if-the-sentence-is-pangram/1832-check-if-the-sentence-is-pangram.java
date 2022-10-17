@@ -6,12 +6,13 @@ class Solution {
             return false;
         }
         
-        HashSet<Character> set = new HashSet<>();
-        
+        int seen = 0;
         for(int i = 0; i < n; i++){
-            set.add(sentence.charAt(i));
+            int place = 1 << (sentence.charAt(i) - 'a');
+            
+            seen |= place;
         }
         
-        return set.size() == 26;
+        return seen == (1 << 26) - 1;
     }
 }
