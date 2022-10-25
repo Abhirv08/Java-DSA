@@ -2,12 +2,13 @@ class Solution {
     public int subarrayGCD(int[] nums, int k) {
         int subarrays = 0;
         for(int i = 0; i < nums.length; i++){
+            int currGCD = nums[i];
             for(int j = i; j < nums.length; j++){
-                int gcd = findGCD(nums, i, j);
-                if(gcd < k){
+                currGCD = gcd(currGCD, nums[j]);
+                if(currGCD < k){
                     break;
                 }
-                if(gcd == k){
+                if(currGCD == k){
                     subarrays++;
                 }
             }
@@ -21,21 +22,6 @@ class Solution {
         if (a == 0)
             return b;
         return gcd(b % a, a);
-    }
- 
-    static int findGCD(int arr[], int i, int j)
-    {
-        int result = arr[i];
-        for (; i <= j; i++){
-            result = gcd(result, arr[i]);
- 
-            if(result == 1)
-            {
-               return 1;
-            }
-        }
- 
-        return result;
     }
     
 }
