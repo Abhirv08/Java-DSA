@@ -3,7 +3,11 @@ class Solution {
         int subarrays = 0;
         for(int i = 0; i < nums.length; i++){
             for(int j = i; j < nums.length; j++){
-                if(findGCD(nums, i, j) == k){
+                int gcd = findGCD(nums, i, j);
+                if(gcd == 1 && k != 1){
+                    break;
+                }
+                if(gcd == k){
                     subarrays++;
                 }
             }
