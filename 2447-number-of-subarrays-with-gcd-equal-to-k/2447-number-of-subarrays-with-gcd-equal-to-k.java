@@ -4,7 +4,7 @@ class Solution {
         for(int i = 0; i < nums.length; i++){
             for(int j = i; j < nums.length; j++){
                 int gcd = findGCD(nums, i, j);
-                if(gcd == 1 && k != 1){
+                if(gcd < k){
                     break;
                 }
                 if(gcd == k){
