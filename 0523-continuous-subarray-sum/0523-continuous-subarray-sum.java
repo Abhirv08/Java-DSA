@@ -7,7 +7,7 @@ class Solution {
         for(int i = 0; i < nums.length; i++){
             sum = sum + nums[i];
             if(map.containsKey(sum%k)){
-                if(i - map.get(sum%k) + 1 >= 2) return true;
+                if(i > map.get(sum%k)) return true;
             }else{
                 map.put(sum%k, i+1);
             }
