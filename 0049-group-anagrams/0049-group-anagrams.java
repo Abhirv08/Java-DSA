@@ -1,5 +1,4 @@
-class Solution {
-    
+class Solution {    
     public static List<List<String>> groupAnagrams(String[] str) {
         List<List<String>> ans = new ArrayList<>();
 
@@ -17,7 +16,6 @@ class Solution {
 
             map.get(key).add(s);
         }
-
         
         return new ArrayList<>(map.values());
     }
