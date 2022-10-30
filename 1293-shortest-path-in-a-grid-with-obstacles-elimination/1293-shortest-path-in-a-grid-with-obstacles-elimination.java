@@ -21,6 +21,10 @@ class Solution {
             if(row < 0 || row == m || col < 0 || col == n) 
                 continue;
             
+            if(visited[row][col] != -1 && visited[row][col] >= remk){
+                continue;
+            }
+            
             if(row == m-1 && col == n-1){
                 return dist;
             }
@@ -32,9 +36,7 @@ class Solution {
                     continue;
             }
             
-            if(visited[row][col] != -1 && visited[row][col] >= remk){
-                continue;
-            }
+            
             
             visited[row][col] = remk;
             
