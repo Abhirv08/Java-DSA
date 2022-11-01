@@ -15,17 +15,10 @@ class Solution {
     private int findColumn(int[][] grid, int row, int col){
         if(row == grid.length) return col;
         
-        if(grid[row][col] == 1){
-            if(col + 1 < grid[0].length && grid[row][col] == grid[row][col + 1]){
-                return findColumn(grid, row + 1, col + 1);
-            }
-        }else{
-            if(col - 1 >= 0 && grid[row][col] == grid[row][col - 1]){
-                return findColumn(grid, row + 1, col - 1);
-            }
-        }
+        int nextCol = col + grid[row][col];
+        if(nextCol < 0 || nextCol == grid[0].length || grid[row][col] != grid[row][nextCol]) return -1;
         
-        return -1;
+        return findColumn(grid, row+1, nextCol);
     }
     
 }
