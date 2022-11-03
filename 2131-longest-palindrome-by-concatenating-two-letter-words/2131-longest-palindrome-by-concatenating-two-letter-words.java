@@ -23,7 +23,6 @@ class Solution {
                         ans += 4*(freq/2);
                     }                    
                 }
-                map.put(key, 0);
             }else{
                 if(map.containsKey(rev)){
                     int freq = map.get(key);
