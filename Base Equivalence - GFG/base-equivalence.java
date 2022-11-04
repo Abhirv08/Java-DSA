@@ -30,10 +30,14 @@ class Solution
     String baseEquiv(int n, int m)
     {
         for(int i = 2; i <= 32; i++){
-            String s = Integer.toString(n, i);
-            if(m == s.length()){
-                return "Yes";
+            int temp = n;
+            int count = 0;
+            while(temp > 0){
+                temp /= i;
+                count++;
             }
+            
+            if(count == m) return "Yes";
         }
         
         return "No";
