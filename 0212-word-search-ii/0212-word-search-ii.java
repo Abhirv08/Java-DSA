@@ -1,11 +1,9 @@
 class Trie{
-    char c;
     Trie[] children = new Trie[26];
     boolean isEnd;
     String word;
     
-    public Trie(char c){
-        this.c = c;
+    public Trie(){
         for(int i = 0; i < 26; i++){
             children[i] = null;
         }
@@ -17,7 +15,7 @@ class Solution {
     Trie root;
     List<String> list;
     public List<String> findWords(char[][] board, String[] words) {
-        root = new Trie('/');
+        root = new Trie();
         list = new ArrayList<>();
         for(String word: words){
             insert(word);
@@ -37,7 +35,7 @@ class Solution {
         
         for(int i = 0; i < s.length(); i++){
             if(temp.children[s.charAt(i) - 'a'] == null){
-                temp.children[s.charAt(i) - 'a'] = new Trie(s.charAt(i));
+                temp.children[s.charAt(i) - 'a'] = new Trie();
             }            
             temp = temp.children[s.charAt(i) - 'a'];
         }
