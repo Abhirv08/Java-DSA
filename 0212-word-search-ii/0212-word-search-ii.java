@@ -45,16 +45,13 @@ class Solution {
     }
     
     private void isPresent(char[][] board, int rows, int cols, int row, int col, Trie node, List<String> list){
-        if(row < 0 || row == rows|| col < 0 || col == cols || board[row][col] == '.'){
-            return ;
-        }
         
         char ch = board[row][col];
-        node = node.children[ch - 'a'];
-        if(node == null){
+        if(ch == '.' || node.children[ch - 'a'] == null){
             return ;
         }
         
+        node = node.children[ch - 'a'];
         if(node.isEnd){
             list.add(node.word);
             node.isEnd = false;
@@ -62,10 +59,10 @@ class Solution {
         
         board[row][col] = '.';
         
-        isPresent(board, rows, cols, row - 1, col, node, list);
-        isPresent(board, rows, cols, row, col + 1, node, list);
-        isPresent(board, rows, cols, row + 1, col, node, list);
-        isPresent(board, rows, cols, row, col - 1, node, list);
+        if(row > 0) isPresent(board, rows, cols, row - 1, col, node, list);
+        if(col < cols - 1) isPresent(board, rows, cols, row, col + 1, node, list);
+        if(row < rows - 1)isPresent(board, rows, cols, row + 1, col, node, list);
+        if(col > 0) isPresent(board, rows, cols, row, col - 1, node, list);
         
         board[row][col] = ch;
         return ;
