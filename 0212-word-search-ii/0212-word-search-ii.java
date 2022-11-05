@@ -33,11 +33,11 @@ class Solution {
     private void insert(String s){
         Trie temp = root;
         
-        for(int i = 0; i < s.length(); i++){
-            if(temp.children[s.charAt(i) - 'a'] == null){
-                temp.children[s.charAt(i) - 'a'] = new Trie();
+        for(char ch: s.toCharArray()){
+            if(temp.children[ch - 'a'] == null){
+                temp.children[ch - 'a'] = new Trie();
             }            
-            temp = temp.children[s.charAt(i) - 'a'];
+            temp = temp.children[ch - 'a'];
         }
         temp.isEnd = true;
         temp.word = s;
