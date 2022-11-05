@@ -1,72 +1,48 @@
-class Trie{
-    Trie[] children = new Trie[26];
-    boolean isEnd;
-    String word;
-    
-    public Trie(){
-        for(int i = 0; i < 26; i++){
-            children[i] = null;
-        }
-        this.isEnd = false;
-        this.word = "";
-    }
-}
 class Solution {
-    Trie root;
-    
     public List<String> findWords(char[][] board, String[] words) {
-        root = new Trie();
-        List<String> list = new ArrayList<>();
-        for(String word: words){
-            insert(word);
+    List<String> res = new ArrayList<>();
+    TrieNode root = buildTrie(words);
+    for (int i = 0; i < board.length; i++) {
+        for (int j = 0; j < board[0].length; j++) {
+            dfs (board, i, j, root, res);
         }
-        
-        for(int row = 0; row < board.length; row++){
-            for(int col = 0; col < board[0].length; col++){
-                isPresent(board, board.length, board[0].length, row, col, root, list);
-            }
-        }
-        
-        return list;
-    }    
-    
-    private void insert(String s){
-        Trie temp = root;
-        
-        for(char ch: s.toCharArray()){
-            if(temp.children[ch - 'a'] == null){
-                temp.children[ch - 'a'] = new Trie();
-            }            
-            temp = temp.children[ch - 'a'];
-        }
-        temp.isEnd = true;
-        temp.word = s;
-        return ;
     }
-    
-    private void isPresent(char[][] board, int rows, int cols, int row, int col, Trie node, List<String> list){
-        
-        char ch = board[row][col];
-        if(ch == '.' || node.children[ch - 'a'] == null){
-            return ;
-        }
-        
-        node = node.children[ch - 'a'];
-        if(node.isEnd){
-            list.add(node.word);
-            node.isEnd = false;
-        }
-        
-        board[row][col] = '.';
-        
-        if(row > 0) isPresent(board, rows, cols, row - 1, col, node, list);
-        if(col < cols - 1) isPresent(board, rows, cols, row, col + 1, node, list);
-        if(row < rows - 1)isPresent(board, rows, cols, row + 1, col, node, list);
-        if(col > 0) isPresent(board, rows, cols, row, col - 1, node, list);
-        
-        board[row][col] = ch;
-        return ;
+    return res;
+}
+
+public void dfs(char[][] board, int i, int j, TrieNode p, List<String> res) {
+    char c = board[i][j];
+    if (c == '#' || p.next[c - 'a'] == null) return;
+    p = p.next[c - 'a'];
+    if (p.word != null) {   // found one
+        res.add(p.word);
+        p.word = null;     // de-duplicate
     }
-    
-    
+
+    board[i][j] = '#';
+    if (i > 0) dfs(board, i - 1, j ,p, res); 
+    if (j > 0) dfs(board, i, j - 1, p, res);
+    if (i < board.length - 1) dfs(board, i + 1, j, p, res); 
+    if (j < board[0].length - 1) dfs(board, i, j + 1, p, res); 
+    board[i][j] = c;
+}
+
+public TrieNode buildTrie(String[] words) {
+    TrieNode root = new TrieNode();
+    for (String w : words) {
+        TrieNode p = root;
+        for (char c : w.toCharArray()) {
+            int i = c - 'a';
+            if (p.next[i] == null) p.next[i] = new TrieNode();
+            p = p.next[i];
+       }
+       p.word = w;
+    }
+    return root;
+}
+
+class TrieNode {
+    TrieNode[] next = new TrieNode[26];
+    String word;
+}
 }
