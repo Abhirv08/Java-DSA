@@ -1,20 +1,28 @@
 class Solution {
     public String orderlyQueue(String s, int k) {
-        if(k == 1){
+        if (k == 1) {
             String ans = s;
-            for(int i = 0; i < s.length(); i++){
+            for (int i = 0; i < s.length(); ++i) {
                 String temp = s.substring(i) + s.substring(0, i);
-                if(temp.compareTo(ans) < 0){
+                if (temp.compareTo(ans) < 0) {
                     ans = temp;
-                }                
+                }
             }
-            
             return ans;
+        } 
+        
+        int[] chars = new int[26];
+        for(int i = 0; i < s.length(); i++){
+            chars[s.charAt(i) - 'a']++;
         }
         
-        char[] chars = s.toCharArray();
-        Arrays.sort(chars);
+        StringBuilder ans = new StringBuilder();
+        for(int i = 0; i < 26; i++){
+            while(chars[i]-- > 0){
+                ans.append((char)('a' + i));
+            }
+        }
         
-        return new String(chars);
+        return ans.toString();
     }
 }
