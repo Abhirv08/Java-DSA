@@ -1,24 +1,27 @@
 class Solution {
     public int maximum69Number (int num) {
-        ArrayList<Integer> list = new ArrayList<>();
+        String str = Integer.toString(num);
         
+        int[] chars = new int[str.length()];
+        
+        int i = str.length() - 1;
         while(num > 0){
-            int rem = num%10;
-            list.add(0, rem);
+            chars[i] = num%10;
             num /= 10;
+            i--;
         }
         
-        for(int i = 0; i < list.size(); i++){
-            if(list.get(i) == 6){
-                list.remove(i);
-                list.add(i, 9);
+        for(i = 0; i < chars.length; i++){
+            if(chars[i] == 6){
+                chars[i] = 9;
                 break;
             }
         }
-
+        
         int ans = 0;
-        for(int i = 0; i < list.size(); i++){
-            ans += Math.pow(10, list.size() - 1 - i)*list.get(i);
+        
+        for(i = 0; i < chars.length; i++){
+            ans += Math.pow(10, chars.length - 1 - i)*chars[i];
         }
         
         return ans;
