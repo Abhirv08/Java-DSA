@@ -1,31 +1,17 @@
 class Solution {
     public String makeGood(String s) {
-        List<Character> list = new ArrayList<>();
+        StringBuilder str = new StringBuilder(s);
+        int end = 0;
         
-        for(char ch: s.toCharArray()){
-            list.add(ch);
+        for(int curr = 0; curr < s.length(); curr++){
+            if(end > 0 && Math.abs(str.charAt(curr) - str.charAt(end - 1)) == 32){
+                end--;
+            }else{
+                str.replace(end, end+1, str.substring(curr, curr+1));
+                end++;
+            }
         }
         
-        int i = 0;
-        while(i < list.size() - 1){
-            char c1 = list.get(i);
-            char c2 = list.get(i+1);
-            
-            if(Math.abs(c1 - c2) == 32){
-                list.remove(i);
-                list.remove(i);
-                i = 0;
-                continue;
-            }            
-            
-            i++;            
-        }
-        
-        StringBuilder ans = new StringBuilder();
-        for(char ch: list){
-            ans.append(ch);
-        }
-        
-        return ans.toString();
+        return str.substring(0, end).toString();
     }
 }
