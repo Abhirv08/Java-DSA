@@ -1,4 +1,4 @@
-// { Driver Code Starts
+//{ Driver Code Starts
 //Initial Template for Java
 
 import java.io.*;
@@ -19,42 +19,50 @@ class GfG
                     System.out.println(ob.minDifference(A,n));
                 }
         }
-}    // } Driver Code Ends
+}    
+// } Driver Code Ends
 
 
 //User function Template for Java
 
-class Solution{
-    public int minDifference(int arr[], int n){ 
-	    int range = 0;
-	    for(int num : arr){
-	        range += num;
+class Solution
+{
+
+	public int minDifference(int arr[], int n) 
+	{ 
+	    
+	    int tSum = 0;
+	    for(int num: arr){
+	        tSum += num;
 	    }
 	    
-	    boolean[][] memo = new boolean[n+1][range+1];
-	    
-	    for(int i = 0; i < n+1; i++){
-	        memo[i][0] = true;
+	    int[][] dp = new int[n+1][tSum];
+	    for(int[] row: dp){
+	        Arrays.fill(row, -1);
 	    }
 	    
-	    for(int i = 1; i < n + 1; i++){
-	        for(int j = 1; j < range+1; j++){
-	            if(arr[i-1] <= j){
-	                memo[i][j] = memo[i-1][j-arr[i-1]] || memo[i-1][j];
-	            }else{
-	                memo[i][j] = memo[i-1][j];
-	            }
-	        }
-	    }
-	    
-	    int ans = Integer.MAX_VALUE;
-	    
-	    for(int i = 0; i <= range/2; i++){
-	        if(memo[n][i]){
-	            ans = Math.min(ans, range - 2*i);
-	        }
-	    }
-	    
-	    return ans;
+	    int ans = minDiff(arr, tSum, 0, 0, dp);
+	    return ans == Integer.MAX_VALUE ? tSum : ans;
 	} 
+	
+	private int minDiff(int[] arr, int tSum, int sum, int idx, int[][] dp){
+	    if(idx == arr.length){
+	        if(sum == tSum || sum == 0){
+	            return Integer.MAX_VALUE;
+	        }else{
+	            return Math.abs(tSum - 2*sum);
+	        }
+	    }
+	    
+	    if(dp[idx][sum] != -1){
+	        return dp[idx][sum];
+	    }
+	    
+	    // if taken
+	    int ifTaken = minDiff(arr, tSum, sum + arr[idx], idx + 1, dp);
+	    
+	    int ifNotTaken = minDiff(arr, tSum, sum, idx + 1, dp);
+	    
+	    return dp[idx][sum] = Math.min(ifTaken, ifNotTaken);
+	}
 }
