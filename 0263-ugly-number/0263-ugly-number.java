@@ -1,27 +1,19 @@
 class Solution {
     public boolean isUgly(int n) {
-        if(n == 1) return true;
-        
-        int q = n/5;
-        while(n > 0 && q * 5 == n){
+        if(n == 0) return false;
+    
+        while(n%5 == 0){
             n /= 5;
-            q = n/5;
         }
         
-        q = n/3;
-        while(n > 0 && q * 3 == n){
+        while(n%3 == 0){
             n /= 3;
-            q = n/3;
         }
         
-        q = n/2;
-        while(n > 0 && q * 2 == n){
+        while(n%2 == 0){
             n /= 2;
-            q = n/2;
         }
         
-        if(n == 1) return true;
-        
-        return false;
+        return n == 1;
     }
 }
