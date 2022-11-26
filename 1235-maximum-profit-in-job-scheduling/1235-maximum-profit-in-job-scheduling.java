@@ -48,14 +48,16 @@ class Solution {
         return dp[idx] = Math.max(ifTaken, ifNotTaken);
     }
     
-    private int nextIndex(Triplet[] jobs, int idx){
-        for(int i = idx+1; i < jobs.length; i++){
-            if(jobs[i].start >= jobs[idx].end){
-                return i;
-            }
+    private int nextIndex(Triplet[] jobs, int index){
+        int start = index+1, end = jobs.length-1, ans = -1;
+        while(start<=end) {
+            int mid = (start+end)>>1;
+            if(jobs[index].end <= jobs[mid].start) {
+                ans = mid;
+                end = mid-1;
+            } else start = mid+1;
         }
-        
-        return -1;
+        return ans;
     }
     
 }
