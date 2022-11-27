@@ -72,14 +72,11 @@ class Solution {
         }
         
         ArrayList<Integer> ans = new ArrayList<>();
-        for(; start <= end; start++){
+        for(; start <= end && a[start] >= 0; start++){
             ans.add(a[start]);
         }
         
-        if(ans.size() == 1 && ans.get(0) < 0){
-            ans.remove(0);
-            ans.add(-1);
-        }
+        if(ans.size() == 0) ans.add(-1);
         
         return ans;
     }
