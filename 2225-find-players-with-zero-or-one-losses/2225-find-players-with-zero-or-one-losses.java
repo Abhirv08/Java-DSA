@@ -1,36 +1,34 @@
 class Solution {
     public List<List<Integer>> findWinners(int[][] matches) {
-        int n = matches.length;
-        HashMap<Integer, Integer> losers = new HashMap<>();
-        HashSet<Integer> winners = new HashSet<>();
+        int[] players = new int[100001];
+        Arrays.fill(players, -1);
         
         for(int[] match: matches){
-            losers.put(match[1], losers.getOrDefault(match[1], 0) + 1);
-            winners.add(match[0]);
-        }
-        
-        List<Integer> alwaysWinners = new ArrayList<>();
-        for(int player: winners){
-            if(!losers.containsKey(player)){
-                alwaysWinners.add(player);
+            int loser = match[1];
+            int winner = match[0];
+            
+            if(players[winner] == -1){
+                players[winner]++;
+            }
+                
+            if(players[loser] == -1){
+                players[loser] = 1;
+            }else{
+                players[loser]++;
             }
         }
         
-        Collections.sort(alwaysWinners);
+        List<List<Integer>> list = new ArrayList<>();
+        list.add(new ArrayList<>());list.add(new ArrayList<>());
         
-        List<Integer> singleTimeLosers = new ArrayList<>();
-        for(int player: losers.keySet()){
-            if(losers.get(player) == 1){
-                singleTimeLosers.add(player);
+        for(int i = 0; i < 100001; i++){
+            if(players[i] == 0){
+                list.get(0).add(i);
+            }else if(players[i] == 1){
+                list.get(1).add(i);
             }
         }
         
-        Collections.sort(singleTimeLosers);
-        
-        List<List<Integer>> ans = new ArrayList<>();
-        ans.add(alwaysWinners);
-        ans.add(singleTimeLosers);
-        
-        return ans;
+        return list;
     }
 }
