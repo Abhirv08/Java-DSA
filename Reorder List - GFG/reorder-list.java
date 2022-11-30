@@ -86,29 +86,40 @@ class Node {
 
 class Solution {
     Node reorderlist(Node head) {
-        ArrayList<Integer> list = new ArrayList<>();
+        Node slow = head, fast = head;
+        
+        while(fast.next != null && fast.next.next != null){
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        
+        Node head2 = slow.next;
+        slow.next = null;
+        head2 = reverse(head2);
+        
+        Node temp1 = head, temp2 = head2;
+        
+        while(temp1 != null && temp2 != null){
+            Node list1nextNode = temp1.next;
+            Node list2nextNode = temp2.next;
+            temp1.next = temp2;
+            temp2.next = list1nextNode;
+            temp1 = list1nextNode;
+            temp2 = list2nextNode;
+        }
+        return head;
+    }
+    
+    private Node reverse(Node head){
+        Node temp = null;
+        
         while(head != null){
-            list.add(head.data);
-            head = head.next;
+            Node nextNode = head.next;
+            head.next = temp;
+            temp = head;
+            head = nextNode;
         }
         
-        int i = 0, j = list.size() - 1;
-        
-        Node temp = new Node(0);
-        head = temp;
-        while(i <= j){
-            temp.next = new Node(list.get(i));
-            temp = temp.next;
-            
-            if(i != j){
-                temp.next = new Node(list.get(j));
-                temp = temp.next;
-            }
-            
-            i++;
-            j--;
-        }
-        
-        return head.next;
+        return temp;
     }
 }
