@@ -5,10 +5,8 @@ class Solution {
             if(isVowel(s.charAt(i))){
                 vowel++;
             }
-        }
-        
-        for(int i = s.length()/2; i < s.length(); i++){
-            if(isVowel(s.charAt(i))){
+            
+            if(isVowel(s.charAt(s.length()/2 + i))){
                 vowel--;
             }
         }
