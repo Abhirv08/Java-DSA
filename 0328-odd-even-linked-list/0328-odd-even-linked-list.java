@@ -12,31 +12,28 @@ class Solution {
     public static ListNode oddEvenList(ListNode head) {
         if(head == null || head.next == null) return head;
 
-        ListNode oddHead = new ListNode(0);
-        ListNode oddNode = oddHead;
+        ListNode oddHead = head;
 
-        ListNode evenHead = new ListNode(0);
+        ListNode evenHead = head.next;
         ListNode evenNode = evenHead;
 
-        ListNode temp = head;
-        int count = 1;
+        ListNode temp = evenHead.next;
+        oddHead.next = temp;
 
-        while(temp != null){
-            if(count%2 == 1){
-                oddNode.next = temp;
-                oddNode = oddNode.next;
-            }else{
-                evenNode.next = temp;
-                evenNode = evenNode.next;
-            }
-            count++;
+        while(temp != null && temp.next != null){
+            evenNode.next = temp.next;
+            evenNode = evenNode.next;
+            temp.next = evenNode.next;
             temp = temp.next;
         }
 
-        oddHead = oddHead.next;
-        evenHead = evenHead.next;
-        oddNode.next = evenHead;
         evenNode.next = null;
+
+        temp = head;
+        while(temp.next != null){
+            temp = temp.next;
+        }
+        temp.next = evenHead;
 
         return oddHead;
     }
