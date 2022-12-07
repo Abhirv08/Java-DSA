@@ -104,23 +104,34 @@ class GFG {
 
 class Solution {
     // Return the Kth smallest element in the given BST
-    int k, ans;
-    public int KthSmallestElement(Node root, int K) {
-        k = K;
-        ans = -1;
-        inOrder(root);
-        return ans;
+    public int KthSmallestElement(Node root, int k) {
+        Node curr = root;
+        
+        while(curr != null){
+            if(curr.left == null){
+                if(k == 1) return curr.data;
+                k--;
+                curr = curr.right;
+            }else{
+                Node nextNode = curr.left;
+                while(nextNode.right != null && nextNode.right != curr){
+                    nextNode = nextNode.right;
+                }
+                
+                if(nextNode.right == null){
+                    nextNode.right = curr;
+                    curr = curr.left;
+                }else{
+                    nextNode.right = null;
+                    k--;
+                    if(k == 0){
+                        return curr.data;
+                    }
+                    curr = curr.right;
+                }
+            }
+        }
+        
+        return -1;
     }
-    
-    private void inOrder(Node root){
-        if(root == null) return ;
-        
-        inOrder(root.left);
-        
-        k--;
-        if(k == 0) ans = root.data;
-        
-        inOrder(root.right);
-    }
-    
 }
