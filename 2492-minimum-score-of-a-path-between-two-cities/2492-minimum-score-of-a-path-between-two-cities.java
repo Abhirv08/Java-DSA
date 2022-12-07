@@ -3,24 +3,22 @@ class Solution {
         ArrayList<ArrayList<int[]>> adj = buildTree(roads, n);
         
         int ans = Integer.MAX_VALUE;
-        Queue<int[]> q = new LinkedList<>();
-        q.add(new int[]{1, Integer.MAX_VALUE});
+        Queue<Integer> q = new LinkedList<>();
+        q.add(1);
         boolean[] vis = new boolean[n+1];
         vis[1] = true;
         
         while(!q.isEmpty()){
             int size = q.size();
             while(size-- > 0){
-                int[] path = q.poll();
-                int node = path[0];
-                int cost = path[1];
+                int node = q.poll();
                 
                 vis[node] = true;
-                ans = Math.min(ans, cost);
                 
                 for(int[] neigh: adj.get(node)){
                     if(!vis[neigh[0]]){
-                        q.add(new int[]{neigh[0], Math.min(cost, neigh[1])});
+                        q.add(neigh[0]);
+                        ans = Math.min(ans, neigh[1]);
                     }
                 }
             }
