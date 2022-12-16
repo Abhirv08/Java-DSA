@@ -9,37 +9,32 @@ class MyQueue {
     }
     
     public void push(int x) {
-        pri.push(x);
-        if(top == -1){
+        if(pri.isEmpty()){
             top = x;
         }
+        pri.push(x);
     }
     
     public int pop() {
-        while(!pri.isEmpty()){
-            temp.push(pri.pop());
+        if(temp.isEmpty()){
+            while(!pri.isEmpty()){
+                temp.push(pri.pop());
+            }
         }
         
-        int num = temp.pop();
-        if(!temp.isEmpty()){
-            top = temp.peek();
-        }else{
-            top = -1;
-        }
-        
-        while(!temp.isEmpty()){
-            pri.push(temp.pop());
-        }
-        
-        return num;
+        return temp.pop();
     }
     
     public int peek() {        
-        return top;
+        if(temp.isEmpty()){
+            return top;
+        }
+        
+        return temp.peek();
     }
     
     public boolean empty() {
-        return pri.isEmpty();
+        return pri.isEmpty() && temp.isEmpty();
     }
 }
 
