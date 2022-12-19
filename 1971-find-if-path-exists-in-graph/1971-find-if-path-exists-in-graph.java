@@ -1,40 +1,39 @@
 class Solution {
-    public boolean validPath(int n, int[][] edges, int source, int destination) {
-        ArrayList<ArrayList<Integer>> adj = constructAdj(edges, n);
-        
-        boolean[] visited = new boolean[n];
-        
+    public boolean validPath(int n, int[][] edges, int src, int dest) {
+        List<List<Integer>> adj = buildGraph(edges, n);
         Queue<Integer> q = new LinkedList<>();
-        q.add(source);
+        q.add(src);
+        boolean[] vis = new boolean[n];
         
         while(!q.isEmpty()){
-            int currentVertex = q.remove();
-            visited[currentVertex] = true;
+            int node = q.poll();
             
-            for(int currentNeigh : adj.get(currentVertex)){
-                if(!visited[currentNeigh]){
-                    q.add(currentNeigh);
-                }
+            if(vis[node]){
+                continue;
+            }
+            vis[node] = true;
+            
+            for(int neigh: adj.get(node)){
+                q.add(neigh);
             }
         }
         
-        return visited[destination];
-        
+        return vis[dest];
     }
     
-    private ArrayList<ArrayList<Integer>> constructAdj(int[][] edges, int n){
-        ArrayList<ArrayList<Integer>> adj = new ArrayList<>();
+    private List<List<Integer>> buildGraph(int[][] edges, int n){
+        List<List<Integer>> adj = new ArrayList<>();
         
         for(int i = 0; i < n; i++){
             adj.add(new ArrayList<>());
         }
         
-        for(int[] currentEdge : edges){
-            int a = currentEdge[0];
-            int b = currentEdge[1];
+        for(int[] edge: edges){
+            int node1 = edge[0];
+            int node2 = edge[1];
             
-            adj.get(a).add(b);
-            adj.get(b).add(a);
+            adj.get(node1).add(node2);
+            adj.get(node2).add(node1);
         }
         
         return adj;
