@@ -1,6 +1,6 @@
 class Solution {
     public int smallestValue(int n) {
-        int[] primes = getPrimes();
+        int[] primes = getPrimes(n);
         
         if(primes[n] != -1){
             return n;
@@ -27,8 +27,8 @@ class Solution {
         return n;
     }
     
-    private int[] getPrimes(){
-        int[] primes = new int[100001];
+    private int[] getPrimes(int n){
+        int[] primes = new int[n+1];
         for(int i = 1; i < primes.length; i++){
             primes[i] = i;
         }
