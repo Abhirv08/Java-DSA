@@ -1,27 +1,27 @@
 class Solution {
     public int maxProfit(int[] prices) {
-        HashMap<String, Integer> map = new HashMap<>();
-        return maxProfit(prices, 0, 0, map);
+        int[][] dp = new int[prices.length+1][2];
+        for(int[] a: dp){
+            Arrays.fill(a, -1);
+        }
+        
+        return maxProfit(prices, 0, 0, dp);
     }
     
-    static int maxProfit(int[] prices, int i, int flag, HashMap<String, Integer> map){
+    static int maxProfit(int[] prices, int i, int flag, int[][] dp){
         if(i >= prices.length) return 0;
         
-        String key = i + ":" + flag;
-        if(map.containsKey(key)) return map.get(key);
+        if(dp[i][flag] != -1) return dp[i][flag]; 
         
         if(flag == 0){   // have to buy
-            int ifBought = -prices[i] + maxProfit(prices, i + 1, 1, map);
-            int ifNotBought = maxProfit(prices, i + 1, 0, map);
+            int ifBought = -prices[i] + maxProfit(prices, i + 1, 1, dp);
+            int ifNotBought = maxProfit(prices, i + 1, 0, dp);
             
-            map.put(key, Math.max(ifBought, ifNotBought));
-            
-            return map.get(key);
+            return dp[i][flag] = Math.max(ifBought, ifNotBought);
         }// have to sell
-        int ifSold = prices[i] + maxProfit(prices, i + 2, 0, map);
-        int ifNotSold = maxProfit(prices, i + 1, 1, map);
+        int ifSold = prices[i] + maxProfit(prices, i + 2, 0, dp);
+        int ifNotSold = maxProfit(prices, i + 1, 1, dp);
         
-        map.put(key, Math.max(ifSold, ifNotSold));
-        return map.get(key);
+        return dp[i][flag] = Math.max(ifSold, ifNotSold);
     }
 }
