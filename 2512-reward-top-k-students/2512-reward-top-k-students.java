@@ -1,0 +1,37 @@
+class Solution {
+    public List<Integer> topStudents(String[] pf, String[] nf, String[] report, int[] sid, int k) {
+        HashMap<String, Integer> feedback = new HashMap<>();
+        for(String s: pf){
+            feedback.put(s, 3);
+        }
+        
+        for(String s: nf){
+            feedback.put(s, -1);
+        }
+        
+        int[][] reports = new int[report.length][2];
+        
+        for(int i = 0; i < report.length; i++){
+            String[] words = report[i].split(" ");
+            int points = 0;
+            for(String word: words){
+                if(feedback.containsKey(word)){
+                    points += feedback.get(word);
+                }
+            }
+            
+            reports[i][0] = points;
+            reports[i][1] = sid[i];
+        }
+        
+        Arrays.sort(reports, (a, b) -> a[0] == b[0] ? a[1] - b[1] : b[0] - a[0]);
+        
+        List<Integer> list = new ArrayList<>();
+        
+        for(int i = 0; i < k; i++){
+            list.add(reports[i][1]);
+        }
+        
+        return list;
+    }
+}
