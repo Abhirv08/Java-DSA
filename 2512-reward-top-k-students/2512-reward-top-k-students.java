@@ -9,12 +9,12 @@ class Solution {
             feedback.put(s, -1);
         }
         
-        int[][] reports = new int[report.length][2];
+        int n = report.length;
+        int[][] reports = new int[n][2];
         
-        for(int i = 0; i < report.length; i++){
-            String[] words = report[i].split(" ");
+        for(int i = 0; i < n; i++){
             int points = 0;
-            for(String word: words){
+            for(String word: report[i].split(" ")){
                 if(feedback.containsKey(word)){
                     points += feedback.get(word);
                 }
