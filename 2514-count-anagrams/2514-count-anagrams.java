@@ -1,57 +1,31 @@
+import java.math.BigInteger;
 class Solution {
-    int mod = 1000000007;
-    long[] fact = new long[100001];
-    private void preCompute(){
-        fact[0] = 1;
-        for(int i = 1; i < 100001; i++){
-            fact[i] = (i*fact[i-1])%mod;
-        }
-    }
+    long mod = (long) (1e9 + 7);
+    long[] fac;
     public int countAnagrams(String s) {
-        preCompute();
-        
-        long ans = 1l;
-        
-        for(String word: s.split(" ")){
-            ans = (ans*findCombinations(word))%mod;
+
+        fac = new long[s.length() + 1];
+        fac[1] = 1;
+      for (int i = 2; i <= s.length(); i++) {
+            fac[i] = (fac[i - 1] * i) % mod;
         }
-        
-        return (int)(ans%mod);
+        String[] ws = s.split(" ");
+        long ans = 1;
+        for (String w : ws) {
+            ans = (ans * calc(w)) % mod;
+        }
+        return (int)ans;
     }
-    
-    private long findCombinations(String word){
-        int[] letters = new int[26];
-        for(char ch: word.toCharArray()){
-            letters[ch - 'a']++;
+    private long calc(String w) {
+        Map<Character, Integer> m = new HashMap<>();
+        for (char ch : w.toCharArray()) {
+            m.put(ch, m.getOrDefault(ch, 0) + 1);
         }
-        
-        long num = fact[word.length()]%mod;
-        
-        long den = 1l;
-        
-        for(int i = 0; i < 26; i++){
-            if(letters[i] > 0){
-                den = (den*(fact[letters[i]]%mod))%mod;
-            }
+        long all = fac[w.length()];
+        for (int v : m.values()) {
+            long inv = BigInteger.valueOf(fac[v]).modInverse(BigInteger.valueOf(mod)).longValue();
+            all = all * inv % mod;
         }
-        
-        long inv = calcInv(den, mod-2);
-        
-        return (num*inv)%mod;
-    }
-    
-    private long calcInv(long num, int pow){
-        long res = 1l;
-        
-        while(pow > 0){
-            if(pow%2 == 1){
-                res = (res*num)%mod;
-            }
-            
-            pow >>= 1;
-            num = (num*num)%mod;
-        }
-        
-        return res%mod;
+        return all;
     }
 }
