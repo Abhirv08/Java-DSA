@@ -68,20 +68,28 @@ class Node {
 class Solution
 {
     //Function to reverse a linked list.
+    Node head2;
     Node reverseList(Node head)
     {
-        if(head.next == null) return head;
-        Node prev = null;
-        Node curr = head;
-        Node next = head.next;
+        if(head.next == null) return head;   
+        head2 = null;
+        helping(head);
         
-        while(curr != null){
-            curr.next = prev;
-            prev = curr;
-            curr = next;
-            if(curr != null) next = curr.next;
+        return head2;
+    }
+    
+    Node helping(Node head){
+        if(head == null) return new Node(0);
+        
+        Node node = helping(head.next);
+        
+        if(head2 == null){
+            head2 = head;
         }
         
-        return prev;
+        node.next = head;
+        head.next = null;
+        
+        return head;
     }
 }
