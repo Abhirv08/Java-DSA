@@ -1,19 +1,14 @@
 class Solution {
 
     public int numberOfGoodPaths(int[] vals, int[][] edges) {
-        // essentially, starting from nodes with smaller values
-        // UF will help identify connected components
-
         int n = vals.length, res = 0;
         List<Integer>[] adj = new ArrayList[n];
         TreeMap<Integer, List<Integer>> sameValues = new TreeMap<>();
         
-        // init
         for (int  i = 0; i < n; i++) {
             adj[i] = new ArrayList<>();
-            List<Integer> l = sameValues.getOrDefault(vals[i], new ArrayList<>());
-            l.add(i);
-            sameValues.put(vals[i], l);
+            if(!sameValues.containsKey(vals[i])) sameValues.put(vals[i], new ArrayList<>());
+            sameValues.get(vals[i]).add(i);
         }
         // build the graph
         for (int[] edge : edges) {
