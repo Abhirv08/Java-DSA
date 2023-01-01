@@ -27,23 +27,36 @@ class GFG
 
 class Solution
 {
-    int mod = 1000000007;
+    static long mod=1000000007;
     public int  compute_value(int n)
     {
-        long ncr = 1, ans = 2;
-        
-        for(int r = 1; r < n; r++){
-            ncr = (((ncr*(n-r+1))%mod)*inv(r))%mod;
-            ans = (ans + (ncr*ncr)%mod)%mod;
-        }
-        
-        return (int)(ans%mod);
+        // code here
+        if(n==1)
+		return 2;
+		long val=2;
+		for(long i=1;i<n;i+=1)
+		{
+		   val=(val%mod*((2*i)%mod+1)%mod*2)%mod;
+		   long x=modpwr(i+1,mod-2);
+		   val=(val*x)%mod;
+		}
+		return (int)val;
     }
-    
-    private long inv(long r){
-        if(r == 1) return 1;
-        return (2*mod - ((mod/r)*inv(mod%r))%mod)%mod;
-    }
-    
-    
+	public static long modpwr(long m,long n)
+	{
+		long res=1;
+		m=m%mod;
+		if(m==0)
+		return 0;
+		while(n>0)
+		{
+			if((n&1)!=0)
+			{
+				res=(res*m)%mod;
+			}
+			n=n>>1;
+			m=(m*m)%mod;
+		}
+		return res;
+	}
 }
