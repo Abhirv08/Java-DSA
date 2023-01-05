@@ -5,23 +5,19 @@ class Solution {
             num = gcd(num, numsDivide[i]);
         }
         
-        //System.out.println(num);
-        
-        TreeMap<Integer, Integer> map = new TreeMap<>();
-        for(int i = 0; i < nums.length; i++){
-            map.put(nums[i], map.getOrDefault(nums[i], 0) + 1);
-        }
-        
+        Arrays.sort(nums);
+        if(num < nums[0]) return -1;
         int deletions = 0;
-        for(int key: map.keySet()){
-            if(num%key == 0){
-                break;
-            }else{
-                deletions += map.get(key);
+        for(int i = 0; i < nums.length; ){
+            if(num%nums[i] == 0) return deletions;
+            
+            while(i < nums.length && num%nums[i] != 0){
+                deletions++;
+                i++;
             }
         }
         
-        return deletions == nums.length ? -1 : deletions;
+        return -1;
     }
     
     int gcd(int num1, int num2){
