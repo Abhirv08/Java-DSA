@@ -29,24 +29,6 @@ class Solution {
                 }
             }
         }
-
-        for(int i = 0; i < 26; i++){
-            if(l2[i] > 0){
-                for(int j = 0; j < 26; j++){
-                    if(l1[j] > 0){
-                        l2[i]--;
-                        l2[j]++;
-                        l1[j]--;
-                        l1[i]++;
-                        if(isOk(l1, l2)) return true;
-                        l2[i]++;
-                        l2[j]--;
-                        l1[j]++;
-                        l1[i]--;
-                    }
-                }
-            }
-        }
         return false;
     }
 
