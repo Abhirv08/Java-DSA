@@ -17,53 +17,41 @@ class Solution {
     public boolean isSameTree(TreeNode p, TreeNode q) {
         if(p == null && q == null) return true;
         if((p == null && p != null) || (p != null && q == null)) return false;
-        List<Integer> p_nodes = findNodes(p);
-        List<Integer> q_nodes = findNodes(q);
         
-        if(p_nodes.size() != q_nodes.size()) return false;
+        Queue<TreeNode> forP = new LinkedList<>();
+        forP.add(p);
+        Queue<TreeNode> forQ = new LinkedList<>();
+        forQ.add(q);
         
-        for(int i = 0; i < p_nodes.size(); i++){
-            if(Integer.compare(p_nodes.get(i), q_nodes.get(i)) != 0){
-                System.out.println(p_nodes.get(i) +":" + q_nodes.get(i));
-                return false;
-            }
+        while(!forP.isEmpty() && !forQ.isEmpty()){
+            TreeNode p_node = forP.poll();
+            TreeNode q_node = forQ.poll();
+            
+            if(!check(p_node, q_node)) return false;
+            
+            if(p_node != null){
+                if(!check(p_node.left, q_node.left)) return false;
+                if(p_node.left != null){
+                    forP.add(p_node.left);
+                    forQ.add(q_node.left);
+                }
+                
+                if(!check(p_node.right, q_node.right)) return false;
+                if(p_node.right != null){
+                    forP.add(p_node.right);
+                    forQ.add(q_node.right);
+                }  
+            }          
         }
         
         return true;
     }
     
-    private List<Integer> findNodes(TreeNode root){
-        List<Integer> nodes = new ArrayList<>();
-        Queue<TreeNode> q = new LinkedList<>();
-        q.add(root);
+    private boolean check(TreeNode p, TreeNode q){
+        if(p == null && q == null) return true;
         
-        while(!q.isEmpty()){
-            int sz = q.size();
-            
-            while(sz-- > 0){
-                TreeNode node = q.poll();
-                if(node != null) nodes.add(node.val);
-                else nodes.add(100000);
-                
-                if(node == null || (node.left == null && node.right == null)){
-                    continue;
-                }
-                
-                if(node.left != null){
-                    q.add(node.left);
-                }else{
-                    q.add(null);
-                }
-                
-                if(node.right != null){
-                    q.add(node.right);
-                }else{
-                    q.add(null);
-                }
-            }
-            
-        }
+        if((p == null && q != null) || (p != null && q == null)) return false;
         
-        return nodes;
+        return p.val == q.val;
     }
 }
