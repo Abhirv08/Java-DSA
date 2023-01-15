@@ -1,91 +1,71 @@
 class Solution {
-
+    int[] parent;
+    int[] rank;
     public int numberOfGoodPaths(int[] vals, int[][] edges) {
-        int n = vals.length, res = 0;
-        List<Integer>[] adj = new ArrayList[n];
-        TreeMap<Integer, List<Integer>> sameValues = new TreeMap<>();
-        
-        for (int  i = 0; i < n; i++) {
-            adj[i] = new ArrayList<>();
-            if(!sameValues.containsKey(vals[i])) sameValues.put(vals[i], new ArrayList<>());
-            sameValues.get(vals[i]).add(i);
+        int n = vals.length;
+        parent = new int[n];
+        for(int i = 0; i < n; i++){
+            parent[i] = i;
         }
-        // build the graph
-        for (int[] edge : edges) {
-            int a = edge[0], b = edge[1];
-            // only record u->v when vals[u] >= v;
-            if (vals[a] >= vals[b]) adj[a].add(b);
-            else adj[b].add(a);
+        rank = new int[n];
+        
+        List<List<Integer>> adj = new ArrayList<>();
+        TreeMap<Integer, List<Integer>> map = new TreeMap<>();
+        for(int i = 0; i < n; i++){
+            adj.add(new ArrayList<>());
+            if(!map.containsKey(vals[i])) map.put(vals[i], new ArrayList<>());
+            map.get(vals[i]).add(i);
         }
         
-        UnionFind uf = new UnionFind(n);
+        for(int[] edge: edges){
+            adj.get(edge[0]).add(edge[1]);
+            adj.get(edge[1]).add(edge[0]);
+        } 
         
-        // scan the whole graph, starting from the smallest,
-        // as this is a treemap
-        for (int val : sameValues.keySet()) {
-            // connect the nodes of this value with its neighbors
-            // only big -> smaller
-            for (int u : sameValues.get(val))
-                for (int v : adj[u])
-                    uf.union(u, v);
+        int ans = n;
+        
+        for(int key: map.keySet()){
+            for(int vrtx: map.get(key)){
+                for(int neigh: adj.get(vrtx)){
+                    if(vals[vrtx] >= vals[neigh]){
+                        join(vrtx, neigh);
+                    }
+                }
+            }
             
-            // now we need to count the number of components
-            // and when a component has more than 1 nodes of the val
-            // know there are k * (k-1) / 2 more paths (1 unique path b/w each pair)
-            // combination -> C^2_k
-            
-            Map<Integer, Integer> groups = new HashMap<>();
-            for (int u : sameValues.get(val)) {
-                int p = uf.find(u);
+            HashMap<Integer, Integer> groups = new HashMap<>();
+            for(int vrtx: map.get(key)){
+                int p = findParent(vrtx);
                 groups.put(p, groups.getOrDefault(p, 0) + 1);
             }
             
-            res += sameValues.get(val).size();
-            
-            for (int key : groups.keySet()) {
-                int k = groups.get(key);
-                res += k * (k-1) / 2; 
+            for(int sz: groups.values()){
+                ans += (sz*(sz-1))/2;
             }
-                
         }
-            
         
-        return res;
+        return ans;
     }
     
-    class UnionFind {
-        int parent[];
-        int rank[];
+    private int findParent(int vertex){
+        if(parent[vertex] == vertex) return vertex;
         
-        public UnionFind(int n) {
-            parent = new int[n];
-            rank = new int[n];
-            for (int i = 0; i < n; i++) {
-                parent[i] = i;
-                rank[i] = 0;
-            }
-        }
-        
-        public int find(int x) {
-            if (parent[x] != x) parent[x] = find(parent[x]);
-            return parent[x];
-        }
-        
-		// join by rank
-        public void union(int x, int y) {
-            int a = find(x);
-            int b = find(y);
-            if (a != b) {
-                if (rank[a] > rank[b])
-                    parent[b] = a;
-                else if (rank[a] < rank[b])
-                    parent[a] = b;
-                else {
-                    parent[b] = a;
-                    rank[a]++;
-                }
-            }
-        }
+        return parent[vertex] = findParent(parent[vertex]);
+    }
     
+    private void join(int v1, int v2){
+        int p1 = findParent(v1);
+        int p2 = findParent(v2);
+        
+        if(p1 == p2){
+            return ;
+        }else if(rank[p1] > rank[p2]){
+            parent[p2] = p1;
+        }else{
+            parent[p1] = p2;
+            if(rank[p1] == rank[p2]) rank[p2]++;
+        }
+        
+        return ;
     }
 }
