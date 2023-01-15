@@ -7,7 +7,7 @@ class Solution {
         long count = 0;
         long ans = 0;
         while(i < n){
-            if(count <= k){
+            if(count < k){
                 int val = map.getOrDefault(nums[i], 0);
                 count -= (long)(val*(val-1))/2;
                 map.put(nums[i], val+1);
