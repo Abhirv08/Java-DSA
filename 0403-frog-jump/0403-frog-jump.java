@@ -10,6 +10,7 @@ class Solution {
     private boolean canCross(int n, int[] stones, int idx, int k, int[][] dp){
         if(idx == n-1) return true;
         if(dp[idx][k] != -1) return dp[idx][k] == 1;
+        
         boolean ans = false;
         int i = idx+1;
         while(i < n && stones[i] - stones[idx] <= k+1){
