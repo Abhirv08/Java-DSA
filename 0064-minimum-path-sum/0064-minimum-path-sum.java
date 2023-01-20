@@ -1,36 +1,24 @@
 class Solution {
-    int[][] paths = {{0,1}, {1,0}};
+    int[][] dp ;
     public int minPathSum(int[][] grid) {
         int m = grid.length, n = grid[0].length;
-        PriorityQueue<int[]> pq = new PriorityQueue<>((a,b) -> Integer.compare(a[2], b[2]));
-        pq.add(new int[]{0, 0, grid[0][0]});
-        int[][] minCost = new int[m][n];
-        for(int[] row: minCost){
-            Arrays.fill(row, Integer.MAX_VALUE);
+        dp = new int[m][n];
+        for(int[] row: dp){
+            Arrays.fill(row, -1);
         }
-        while(!pq.isEmpty()){
-            int[] currPos = pq.poll();
-            int r = currPos[0];
-            int c = currPos[1];
-            int sum = currPos[2];
-
-            if(r == m-1 && c == n-1){
-                return sum;
-            }
-            
-            for(int[] path: paths){
-                int nr = r + path[0];
-                int nc = c + path[1];
-                if(nr < m && nc < n){
-                    int ncost = sum + grid[nr][nc];
-                    if(ncost < minCost[nr][nc]){
-                        pq.add(new int[]{nr, nc, ncost});
-                        minCost[nr][nc] = ncost;
-                    }
-                }
-            }
-        }
-
-        return -1;
+        
+        return paths(grid, 0, 0);
+    }
+    
+    private int paths(int[][] grid, int row, int col){
+        if(row == grid.length - 1 && col == grid[0].length-1) return grid[grid.length - 1][grid[0].length - 1];
+        if(row == grid.length || col == grid[0].length) return 10000;
+        
+        if(dp[row][col] != -1) return dp[row][col];
+        
+        int down = paths(grid, row+1, col);
+        int right = paths(grid, row, col+1);
+        
+        return dp[row][col] = grid[row][col] + Math.min(down, right);
     }
 }
