@@ -1,18 +1,16 @@
 class Solution {
-    List<List<Integer>> ans;
     HashSet<List<Integer>> set;
     public List<List<Integer>> findSubsequences(int[] nums) {
-        ans = new ArrayList<>();
+
         set = new HashSet<>();
         subsequences(nums, 0, -101, new ArrayList<>());
         
-        return ans;
+        return new ArrayList<>(set);
     }
     
     private void subsequences(int[] nums, int idx, int prev, List<Integer> list){
         if(idx == nums.length){
             if(list.size() >= 2 && !set.contains(list)){
-                ans.add(new ArrayList<>(list));
                 set.add(new ArrayList<>(list));
             }
             
