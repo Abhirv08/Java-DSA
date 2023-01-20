@@ -1,30 +1,27 @@
 class Solution {
-    int[][] dp;
+    
     public int minimumTotal(List<List<Integer>> triangle) {
         int m = triangle.size();
-        dp = new int[m][m];
-        for(int[] row: dp) Arrays.fill(row, -1);
-        
-        return minSum(triangle, 0, 0);
-    }
-    
-    private int minSum(List<List<Integer>> triangle, int idx, int prev){
-        if(idx == triangle.size() - 1){
-            int min = Integer.MAX_VALUE;
-            for(int i = prev; i <= prev+1 && i < triangle.get(idx).size(); i++){
-                min = Math.min(min, triangle.get(idx).get(i));
+        int[][] dp = new int[m][m];
+        for(int[] row: dp) Arrays.fill(row, 1000000);
+        for(int i = 0; i < m; i++){
+            for(int j = 0; j < i+1; j++){
+                if(i == 0 && j == 0) dp[i][j] = triangle.get(0).get(0);
+                else if(i > 0){
+                    int up = 1000000, left = 1000000;
+                    if(i > 0) up = dp[i-1][j];
+                    if(j > 0) left = dp[i-1][j-1];
+                    
+                    dp[i][j] = triangle.get(i).get(j) + Math.min(up, left);
+                }
             }
-            return min;
         }
         
-        if(dp[idx][prev] != -1) return dp[idx][prev];
-        
-        int min = Integer.MAX_VALUE;
-        for(int i = prev; i <= prev+1 && i < triangle.get(idx).size(); i++){
-            int sum = triangle.get(idx).get(i) + minSum(triangle, idx+1, i);
-            min = Math.min(min, sum);
+        int ans = Integer.MAX_VALUE;
+        for(int i = 0; i < m; i++){
+            ans = Math.min(ans, dp[m-1][i]);
         }
         
-        return dp[idx][prev] = min;        
+        return ans;
     }
 }
