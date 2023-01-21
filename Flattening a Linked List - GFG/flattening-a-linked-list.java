@@ -119,34 +119,45 @@ class Node
     the flattened linked list. */
 class GfG
 {
-    Node flatten(Node root){
-	    Node temp = root;
-	    ArrayList<Integer> list = new ArrayList<>();
-	    while(temp != null){
-	        list.add(temp.data);
-	        Node temp2 = temp.bottom;
-	        while(temp2 != null){
-	            list.add(temp2.data);
-	            temp2 = temp2.bottom;
-	        }
-	        temp = temp.next;
-	    }
+    Node flatten(Node root)
+    {
+	    if(root == null || root.next == null) return root;
 	    
-	    // System.out.println(list);
-	    Collections.sort(list);
-	    //System.out.println(list);
-	    temp = root;
-	    
-	    int i = 0; 
-	    while(i < list.size()){
-	        temp.data = list.get(i);
-	        i++;
-	        if(i == list.size()) break;
-	        temp.bottom = new Node(0);
-	        temp = temp.bottom;
-	    }
+	    root.next = flatten(root.next);
+	    root = merge(root, root.next);
 	    
 	    return root;
+    }
+    
+    Node merge(Node a, Node b){
+        Node res = new Node(0);
+        Node temp = res;
+        
+        while(a != null && b!= null){
+            if(a.data < b.data){
+                temp.bottom = a;
+                temp.next = null;
+                a = a.bottom;
+            }else{
+                temp.bottom = b;
+                temp.next = null;
+                b = b.bottom;
+            }
+            temp = temp.bottom;
+        }
+        
+        if(a == null){
+            temp.bottom = b;
+        }
+        
+        if(b == null){
+            temp.bottom = a;
+        }
+        
+        res = res.bottom;
+        res.next = null;
+        
+        return res;
     }
     
 }
