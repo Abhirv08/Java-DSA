@@ -1,12 +1,12 @@
 class Solution {
-    List<List<String>> ans;
+    
     public List<List<String>> partition(String s) {
-        ans = new ArrayList<>();
-        makePartitions(s, s.length(), 0, new ArrayList<>());
+        List<List<String>> ans = new ArrayList<>();
+        makePartitions(s, s.length(), 0, new ArrayList<>(), ans);
         return ans;
     }
     
-    private void makePartitions(String s, int n, int idx, List<String> list){
+    private void makePartitions(String s, int n, int idx, List<String> list, List<List<String>> ans){
         if(idx == n){
             ans.add(new ArrayList<>(list));
             return ;
@@ -16,7 +16,7 @@ class Solution {
             String temp = s.substring(idx, i);
             if(isPalindrome(temp)){
                 list.add(temp);
-                makePartitions(s, n, i, list);
+                makePartitions(s, n, i, list, ans);
                 list.remove(list.size() - 1);
             }
         }
