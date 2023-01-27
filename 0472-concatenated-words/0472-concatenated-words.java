@@ -1,23 +1,68 @@
 class Solution {
+    class TrieNode{
+        TrieNode[] children = new TrieNode[26];
+        String word;
+        boolean isAdded;
+    }
+    
+    TrieNode root;
+    List<String> ans;
     public List<String> findAllConcatenatedWordsInADict(String[] words) {
-        HashSet<String> set = new HashSet<>(Arrays.asList(words));
-                
-        List<String> ans = new ArrayList<>();
+        root = new TrieNode();
+        ans = new ArrayList<>();
         
         for(String word: words){
-            int len = word.length();
-            boolean[] dp = new boolean[len + 1];
-            dp[0] = true;
-            for(int i = 1; i <= len; i++){
-                for(int j = (i==len ? 1 : 0); !dp[i] && j < i; j++){
-                    dp[i] = dp[j]&&set.contains(word.substring(j, i));
-                }
+            insert(word);
+        }
+        
+        searchForConcatenated(root);
+        
+        return ans;
+    }
+    
+    private void searchForConcatanation(TrieNode curr, TrieNode newWord){
+        if(curr.word != null && newWord.word != null){
+            if(!curr.isAdded) ans.add(curr.word);
+            curr.isAdded = true;
+        }
+        
+        if(newWord.word != null){
+            searchForConcatanation(curr, root);
+        }
+        
+        for(int i = 0; i < 26; i++){
+            if(curr.children[i] != null && newWord.children[i] != null){
+                searchForConcatanation(curr.children[i], newWord.children[i]);
             }
-            if(dp[len]){
-                ans.add(word);
+        }        
+        
+        return ;
+    }
+    
+    private void searchForConcatenated(TrieNode curr){
+        if(curr.word != null){
+            searchForConcatanation(curr, root);
+        }
+        
+        for(TrieNode child: curr.children){
+            if(child != null){
+                searchForConcatenated(child);
             }
         }
         
-        return ans;
+        return ;
+    }
+    
+    private void insert(String s){
+        TrieNode temp = root;
+        
+        for(char ch: s.toCharArray()){
+            if(temp.children[ch-'a'] == null){
+                temp.children[ch-'a'] = new TrieNode();
+            }
+            temp = temp.children[ch-'a'];
+        }
+        temp.word = s;
+        return ;
     }
 }
