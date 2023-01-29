@@ -1,7 +1,7 @@
 class Solution {
     long mod = 1000000007;
     public int monkeyMove(int n) {
-        return (int)((mod + calcPow(2, n) - 2)%mod);
+        return (int)((mod + calcPow(2, n)%mod - 2%mod)%mod);
     }
     
     long calcPow(long num, long pow){
