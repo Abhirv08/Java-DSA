@@ -1,10 +1,10 @@
 class Solution {
     public int minCapability(int[] nums, int k) {
-        int left = 0, right = (int)1e9+1;
-        // for(int num: nums){
-        //     min = Math.min(min, num);
-        //     max = Math.max(max, num);
-        // }
+        int right = 0, left = (int)1e9+1;
+        for(int num: nums){
+            left = Math.min(left, num);
+            right = Math.max(right, num);
+        }
         
         // System.out.println(max + " " + min);
         while(left < right){
