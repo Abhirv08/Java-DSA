@@ -14,26 +14,20 @@
  * }
  */
 class Solution {
+    TreeNode prevVal;
+    int ans;
     public int minDiffInBST(TreeNode root) {
-        List<Integer> list = new ArrayList<>();
-        postOrder(root, list);
-        
-        System.out.println(list);
-        int ans = Integer.MAX_VALUE;
-        for(int i = 0; i < list.size()-1; i++){
-            ans = Math.min(ans, list.get(i+1) - list.get(i));
-        }
-        
+        ans = Integer.MAX_VALUE;
+        dfs(root);
         return ans;
     }
     
-    void postOrder(TreeNode root, List<Integer> list){
+    void dfs(TreeNode root){
         if(root == null) return ;
         
-        postOrder(root.left, list);
-        list.add(root.val);
-        postOrder(root.right, list);
+        dfs(root.left);
+        if(prevVal != null) ans = Math.min(ans, Math.abs(root.val - prevVal.val));
+        prevVal = root;
+        dfs(root.right);
     }
-    
-    
 }
