@@ -2,11 +2,12 @@ class Solution {
     public int[][] substringXorQueries(String s, int[][] queries) {
         int n = queries.length;
         HashMap<Integer, List<Integer>> map = new HashMap<>();
-        
+        int max = 0;
         for(int i = 0; i < n; i++){
             int[] q = queries[i];
             map.putIfAbsent(q[0]^q[1], new ArrayList<>());
             map.get(q[0]^q[1]).add(i);
+            max = Math.max(max,q[0]^q[1]);
         }
         
         int[][] ans = new int[n][2];
@@ -22,6 +23,7 @@ class Solution {
             }
             for(int j = i; j < Math.min(i+30, s.length()); j++){
                 int num = Integer.parseInt(s.substring(i, j+1), 2);
+                if(num > max) break;
                 if(map.containsKey(num)){
                     updateAns(ans, map.get(num), i, j);
                     map.remove(num);
