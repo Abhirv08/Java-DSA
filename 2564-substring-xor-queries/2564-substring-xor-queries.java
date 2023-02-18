@@ -21,12 +21,14 @@ class Solution {
                 map.remove(0);
                 continue;
             }
+            
+            int val = 0;
             for(int j = i; j < Math.min(i+30, s.length()); j++){
-                int num = Integer.parseInt(s.substring(i, j+1), 2);
-                if(num > max) break;
-                if(map.containsKey(num)){
-                    updateAns(ans, map.get(num), i, j);
-                    map.remove(num);
+                val = (val << 1) + (s.charAt(j) - '0');
+                if(val > max) break;
+                if(map.containsKey(val)){
+                    updateAns(ans, map.get(val), i, j);
+                    map.remove(val);
                 }
             }
         }
