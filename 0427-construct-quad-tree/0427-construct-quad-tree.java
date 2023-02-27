@@ -47,26 +47,17 @@ class Solution {
     }
     
     private Node construct(int n, int[][] grid, int sr, int er, int sc, int ec){
-        if(checkValues(grid, n, sr, er, sc, ec)) return new Node(grid[sr][sc] == 1, true);
+        if(sr == er && sc == ec) return new Node(grid[sr][sc] == 1, true);
         
-        Node root = new Node(true, false);
+        Node tl = construct(n, grid, sr, (sr+er)/2, sc, (sc + ec)/2);
+        Node tr = construct(n, grid, sr, (sr+er)/2, (sc + ec)/2 + 1, ec);
+        Node bl = construct(n, grid, (sr+er)/2 + 1, er, sc, (sc + ec)/2);
+        Node br = construct(n, grid, (sr+er)/2 + 1, er, (sc + ec)/2 + 1, ec);
         
-        root.topLeft = construct(n, grid, sr, (sr+er)/2, sc, (sc + ec)/2);
-        root.topRight = construct(n, grid, sr, (sr+er)/2, (sc + ec)/2 + 1, ec);
-        root.bottomLeft = construct(n, grid, (sr+er)/2 + 1, er, sc, (sc + ec)/2);
-        root.bottomRight = construct(n, grid, (sr+er)/2 + 1, er, (sc + ec)/2 + 1, ec);
-        
-        return root;
-    }
-    
-    private boolean checkValues(int[][] grid, int n, int sr, int er, int sc, int ec){
-        
-        for(int i = sr; i <= er; i++){
-            for(int j = sc; j <= ec; j++){
-                if(grid[i][j] != grid[sr][sc]) return false;
-            }
+        if(tl.isLeaf && tr.isLeaf && bl.isLeaf && br.isLeaf && tl.val == tr.val && tr.val == bl.val && bl.val == br.val){
+            return new Node(tl.val, true);
         }
         
-        return true;
+        return new Node(true, false, tl, tr, bl, br);
     }
 }
