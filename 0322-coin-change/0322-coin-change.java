@@ -2,7 +2,7 @@ class Solution {
     public static int coinChange(int[] coins, int amount) {
         if(amount == 0) return 0;
         int n = coins.length;
-        Arrays.sort(coins);
+        // Arrays.sort(coins);
         int[][] dp = new int[n][amount+1];
         for(int[] r: dp) Arrays.fill(r, -1);
         int minCoins = findCoins(coins, amount, n - 1, dp);
