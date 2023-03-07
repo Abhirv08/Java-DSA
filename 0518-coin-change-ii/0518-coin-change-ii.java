@@ -3,29 +3,22 @@ class Solution {
         int n = coins.length;
         
         int[][] dp = new int[n][amount + 1];
-        for(int[] r: dp){
-            Arrays.fill(r, -1);
+        
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < amount + 1; j++){
+                if(i == 0){
+                    if(j%coins[0] == 0) dp[i][j] = 1;
+                }else{
+                    int notTaken = dp[i - 1][j];
+                    int taken = 0;
+                    if(j >= coins[i]){
+                        taken = dp[i][j - coins[i]];
+                    }
+                    dp[i][j] = notTaken + taken;
+                }
+            }
         }
         
-        return findWays(coins, amount, n-1, dp);
+        return dp[n - 1][amount];
     }
-    
-    private int findWays(int[] coins, int amount, int idx, int[][] dp){
-        if(idx < 0){
-            if(amount == 0) return 1;
-            
-            return 0;
-        }
-        
-        if(dp[idx][amount] != -1) return dp[idx][amount];
-        
-        int notTaken = findWays(coins, amount, idx - 1, dp);
-        int taken = 0;
-        if(amount >= coins[idx]){
-            taken = findWays(coins, amount - coins[idx], idx, dp);
-        }
-        
-        return dp[idx][amount] = notTaken + taken;
-    }
-    
 }
