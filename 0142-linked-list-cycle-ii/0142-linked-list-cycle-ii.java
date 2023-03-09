@@ -17,26 +17,17 @@ public class Solution {
             slow = slow.next;
             fast = fast.next.next;
             
-            if(slow == fast) break;
-        }
-        
-        if(fast == null || fast.next == null) return null;
-        
-        
-        HashMap<ListNode, Integer> map = new HashMap<>();
-        
-        ListNode temp = head;
-        int i = 0;
-        while(true){
-            
-            if(map.containsKey(temp)){                
-                break;
-            }else{
-                map.put(temp, i++);
-                temp = temp.next;
+            if(slow == fast){
+                ListNode temp = head;
+                while(slow != temp){
+                    slow = slow.next;
+                    temp = temp.next;
+                }
+                
+                return slow;
             }
         }
         
-        return temp;
+        return null;
     }
 }
