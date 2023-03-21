@@ -1,8 +1,7 @@
 class Solution {
     public int findMinMoves(int[] machines) {
         int n = machines.length;
-        int clothes = 0;
-        for(int num: machines) clothes += num;
+        int clothes = Arrays.stream(machines).sum();
         
         if(clothes % n != 0) return -1;
         
