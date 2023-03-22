@@ -3,6 +3,7 @@ class Solution {
         ArrayList<ArrayList<int[]>> adj = buildTree(roads, n);
         
         int ans = Integer.MAX_VALUE;
+        
         Queue<Integer> q = new LinkedList<>();
         q.add(1);
         boolean[] vis = new boolean[n+1];
@@ -39,6 +40,6 @@ class Solution {
             adj.get(road[1]).add(new int[]{road[0], road[2]});
         }
         
-        return adj;
+        return adj;        
     }
 }
