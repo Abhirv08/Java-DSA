@@ -30,10 +30,7 @@ class Solution {
             dp[i1+1][i2+1] = res ? 1 : 0;
             return res;
         }else if(p.charAt(i2) == '*'){
-            boolean ans = false;
-            for(int i = 0; i <= m; i++){
-                ans = ans | match(m, s, i1-i, n, p, i2-1, dp);
-            }
+            boolean ans = match(m, s, i1-1, n, p, i2, dp) | match(m, s, i1, n, p, i2-1, dp);;
             
             dp[i1+1][i2+1] = (ans ? 1 : 0);
                 
