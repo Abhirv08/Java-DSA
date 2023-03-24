@@ -5,28 +5,29 @@ class Solution {
         
         int[][] dp = new int[m+1][n+1];
         
-        for(int[] r: dp) Arrays.fill(r, -1);
-        
-        return findMinOper(word1, m-1, word2, n-1, dp);
-    }
-    
-    private int findMinOper(String w1, int i1, String w2, int i2, int[][] dp){
-        if(i2 < 0){
-            return i1 + 1;
+        for(int i = 0; i <= m; i++){
+            dp[i][0] = i;
         }
         
-        if(i1 < 0) return i2 + 1;
-        
-        if(dp[i1+1][i2+1] != -1) return dp[i1+1][i2+1];
-        
-        if(w1.charAt(i1) == w2.charAt(i2)){
-           return dp[i1+1][i2+1] = findMinOper(w1, i1 - 1, w2, i2 - 1, dp);
+        for(int j = 0; j <= n; j++){
+            dp[0][j] = j;
         }
         
-        int insert = findMinOper(w1, i1, w2, i2 - 1, dp);
-        int replace = findMinOper(w1, i1 - 1, w2, i2 - 1, dp);
-        int delete = findMinOper(w1, i1 - 1, w2, i2, dp);
+        for(int i = 1; i <= m; i++){
+            for(int j = 1; j <= n; j++){
+                if(word1.charAt(i-1) == word2.charAt(j-1)){
+                   dp[i][j] = dp[i - 1][j - 1];
+                    continue;
+                }
+
+                int insert = dp[i][j-1];
+                int replace = dp[i-1][j-1];
+                int delete = dp[i-1][j];
+
+                dp[i][j] = 1 + Math.min(insert, Math.min(replace, delete));
+            }
+        }
         
-        return dp[i1+1][i2+1] = 1 + Math.min(insert, Math.min(replace, delete));
+        return dp[m][n];
     }
 }
