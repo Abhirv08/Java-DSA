@@ -1,60 +1,45 @@
 class Solution {
-    long viistedVertices = 0;
+
     public long countPairs(int n, int[][] edges) {
-        ArrayList<ArrayList<Integer>> adj = constructGraph(edges, n);
+
+        List<List<Integer>> adj = buildGraph(n, edges);
         
-        boolean[] visited = new boolean[n];
+        boolean[] vis = new boolean[n];
         
         long ans = 0;
-        
-        for(int currentVertex = 0; currentVertex < n; currentVertex++){
-            if(!visited[currentVertex]){
-                viistedVertices = 0;
-                reachableNodes(adj, currentVertex, visited);
-                ans += (long)(viistedVertices * (n - viistedVertices));                
+        for(int i = 0; i < n; i++){
+            if(!vis[i]){
+                long count = dfs(adj, i, vis);
+                ans += (n - count)*count;
             }
         }
         
         return ans/2;
     }
     
-    private void reachableNodes(ArrayList<ArrayList<Integer>> adj, int currentVertex, boolean[] visited){
+    private long dfs(List<List<Integer>> adj, int vertex, boolean[] vis){
+        vis[vertex] = true;
         
-        visited[currentVertex] = true;
-        viistedVertices++;
-        
-        for(int currentNeigh : adj.get(currentVertex)){
-            if(!visited[currentNeigh]){
-                reachableNodes(adj, currentNeigh, visited);
+        long count = 1;
+        for(int neigh: adj.get(vertex)){
+            if(!vis[neigh]){
+                count += dfs(adj, neigh, vis);
             }
         }
         
-        return;
+        return count;
     }
     
-//     private long count(HashSet<Integer> memo, int currentVertex, int n){
-//         long ans = 0;
-//         for(int i = currentVertex + 1; i < n; i++){
-//             if(!memo.contains(i)){
-//                 ans++;
-//             }
-//         }
-        
-//         return ans;
-//     }
-    
-    private ArrayList<ArrayList<Integer>> constructGraph(int[][] edges, int n){
-        ArrayList<ArrayList<Integer>> adj = new ArrayList<>();
+    private List<List<Integer>> buildGraph(int n, int[][] edges){
+        List<List<Integer>> adj = new ArrayList<>();
         
         for(int i = 0; i < n; i++){
             adj.add(new ArrayList<>());
         }
         
-        for(int[] currEdge : edges){
-            int a = currEdge[0];
-            int b = currEdge[1];
-            adj.get(a).add(b);
-            adj.get(b).add(a);
+        for(int[] edge: edges){
+            adj.get(edge[0]).add(edge[1]);
+            adj.get(edge[1]).add(edge[0]);
         }
         
         return adj;
