@@ -1,22 +1,36 @@
 class Solution {
     public int lengthOfLIS(int[] nums) {
-        int[][] dp = new int[nums.length][nums.length+1];
-        for(int[] r: dp) Arrays.fill(r, -1);
+        int n = nums.length;
         
-        return findLength(nums, 0, -1, dp);
-    }
-    
-    private int findLength(int[] nums, int i, int prev_i, int[][] dp){
-        if(i == nums.length) return 0;
+        List<Integer> list = new ArrayList<>();
         
-        if(dp[i][prev_i+1] != -1) return dp[i][prev_i+1];
-        
-        if(prev_i >= 0 && nums[i] <= nums[prev_i]){
-            return dp[i][prev_i+1] = findLength(nums, i+1, prev_i, dp);
+        for(int i = 0; i < n; i++){
+            int idx = findIdx(nums[i], list);
+            if(idx < list.size()) list.remove(idx);
+            list.add(idx, nums[i]);
         }
         
-        int take = 1 + findLength(nums, i+1, i, dp);
-        int dontTake = findLength(nums, i+1, prev_i, dp);
-        return dp[i][prev_i+1] = Math.max(take, dontTake);
+        return list.size();
+    }
+    
+    private int findIdx(int target, List<Integer> list){
+        if(list.size() == 0) return 0;
+        
+        int l = 0, r = list.size() - 1;
+        while(l <= r){
+            int m = l + (r-l)/2;
+            
+            if(list.get(m) == target){
+                l = m;
+                break;
+            }            
+            if(list.get(m) < target){
+                l = m + 1;
+            }else{
+                r = m - 1;
+            }
+        }
+        
+        return l;
     }
 }
