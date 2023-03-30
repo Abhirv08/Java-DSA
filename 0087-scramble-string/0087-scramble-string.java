@@ -1,37 +1,38 @@
 class Solution {
-    Map<String, Boolean> mp=new HashMap<>();
-
-    public boolean isScramble(String s1, String s2) {
-        int n1=s1.length();
-        if(s2.length()!=n1)
-         return false;
-        if(s1.equals(s2))
-         return true;
-        if(n1==1)
-         return false;
-        String key=s1+" "+s2;
-        if(mp.containsKey(key))
-         return mp.get((key));
-
-         for(int i=1;i<n1;i++)
-         {
-             boolean with=(isScramble(s1.substring(0,i),s2.substring(0,i))&& isScramble(s1.substring(i),s2.substring(i)));
-
-             if(with)
-             {
-                 mp.put(key,true);
-                 return true;
-             }
-
-             boolean swap=(isScramble(s1.substring(0,i),s2.substring(n1-i))&& isScramble(s1.substring(i),s2.substring(0,n1-i)));
-
-             if(swap)
-             {
-                 mp.put(key,true);
-                 return true;
-             }
-         }
-         mp.put(key,false);
-         return false;
+    HashMap<String, Boolean> map = new HashMap<>();
+    public boolean isScramble(String s, String t) {        
+        return isScrambled(s, t);
+    }
+    
+    private boolean isScrambled(String s, String t){
+        int n = s.length();
+        if(n != t.length()) return false;
+        if(s.equals(t)) return true;
+        if(n == 1) return false;
+        
+        String key = s + " " + t;
+        if(map.containsKey(key)) return map.get(key);
+        
+        
+        for(int i = 1; i < n; i++){            
+            // swapped
+            boolean swapped = isScrambled(s.substring(0, i), t.substring(n-i)) &&
+                isScrambled(s.substring(i), t.substring(0, n-i));
+            if(swapped) {
+                map.put(key, true);
+                return true;
+            }
+            
+            // not swapped
+            boolean notSwapped = isScrambled(s.substring(0, i), t.substring(0, i)) &&
+                isScrambled(s.substring(i), t.substring(i));            
+            if(notSwapped) {
+                map.put(key, true);
+                return true;
+            }
+        }
+        
+        map.put(key, false);
+        return false;
     }
 }
