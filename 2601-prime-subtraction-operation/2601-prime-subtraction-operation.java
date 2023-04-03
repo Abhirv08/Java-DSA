@@ -24,17 +24,21 @@ class Solution {
     private int getLeastPrime(List<Integer> primes, int num, int target){
         int n = primes.size();
 
-        int r = n - 1;
-
-        while(r >= 0 && num - primes.get(r) <= target) r--;
-
+        int l = 0, r = n - 1;  
         int smallest = num;
 
-        while(r >= 0 && num - primes.get(r) > target){
-            smallest = Math.min(smallest, num - primes.get(r));
-            r--;
+        while(l <= r){
+            int m = l + (r-l)/2;
+            
+            int diff = num - primes.get(m);
+            if(diff <= target){
+                r = m - 1;
+            }else{
+                smallest = Math.min(smallest, diff);
+                l = m + 1;
+            }
         }
-
+        
         return smallest;
     }
     
