@@ -2,15 +2,15 @@ class Solution {
     public int partitionString(String s) {
         int count = 0;
         
-        HashSet<Character> set = new HashSet<>();
+        int[] chars = new int[26];
         int i = 0;
-        while(i < s.length()){            
-            while(i < s.length() && !set.contains(s.charAt(i))){
-                set.add(s.charAt(i));
+        while(i < s.length()){          
+            while(i < s.length() && chars[s.charAt(i) - 'a'] == 0){
+                chars[s.charAt(i) - 'a']++;
                 i++;
             }
             count++;
-            set.clear();
+            chars = new int[26];
         }
         
         return count;
