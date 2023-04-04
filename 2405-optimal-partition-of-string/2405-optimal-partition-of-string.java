@@ -1,18 +1,15 @@
 class Solution {
     public int partitionString(String s) {
-        int count = 0;
-        
-        int[] chars = new int[26];
-        int i = 0;
-        while(i < s.length()){          
-            while(i < s.length() && chars[s.charAt(i) - 'a'] == 0){
-                chars[s.charAt(i) - 'a']++;
-                i++;
+        int ans = 1;
+        int mask = 0;
+        for (char ch : s.toCharArray()) {
+            int shift = ch - 'a';
+            if ((mask & (1 << shift)) > 0) {
+                ans++;
+                mask = 0;
             }
-            count++;
-            chars = new int[26];
+            mask |= 1 << shift;
         }
-        
-        return count;
+        return ans;
     }
 }
