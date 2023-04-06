@@ -1,46 +1,32 @@
 class Solution {
     public int closedIsland(int[][] grid) {
-        int ans = 0;
-        int m = grid.length;
-        int n = grid[0].length;
-        for(int currentRow = 0; currentRow < m; currentRow++){
-            for(int currentCol = 0; currentCol < n; currentCol++){
-                if( grid[currentRow][currentCol] == 0 && (currentRow == 0 || currentRow == m-1 || currentCol == 0 || currentCol == n-1)){
-                    sinkIsland(grid, currentRow, currentCol, m, n);
+        int n = grid.length, m = grid[0].length;
+        
+        boolean[][] vis = new boolean[n][m];
+        
+        int count = 0;
+        for(int r = 1; r < n-1; r++){
+            for(int c = 1; c < m-1; c++){
+                if(grid[r][c] == 0 && !vis[r][c] && isClosed(grid, r, c, vis)){
+                    count++;
                 }
             }
         }
         
-        for(int currentRow = 1; currentRow < m-1; currentRow++){
-            for(int currentCol = 1; currentCol < n-1; currentCol++){
-                if( grid[currentRow][currentCol] == 0){
-                    sinkIsland(grid, currentRow, currentCol, m, n);
-                    ans++;
-                }
-            }
-        }
-        
-        for(int[] g : grid){
-            System.out.println(Arrays.toString(g));
-        }
-        
-        return ans;
+        return count;
     }
     
-    private void sinkIsland(int[][] grid, int currentRow, int currentCol, int m, int n){
-        if(currentRow < 0 || currentRow >= m || currentCol < 0 || currentCol >= n || grid[currentRow][currentCol] == 1){
-            return;
-        }
+    private boolean isClosed(int[][] grid, int r, int c, boolean[][] vis){
+        if(r < 0 || r >= grid.length || c < 0 || c >= grid[0].length) return false;
+        if(vis[r][c] || grid[r][c] == 1) return true;
         
-        grid[currentRow][currentCol] = 1;
+        vis[r][c] = true;
         
-        sinkIsland(grid, currentRow - 1, currentCol, m, n);
-        sinkIsland(grid, currentRow + 1, currentCol, m, n);
-        sinkIsland(grid, currentRow, currentCol - 1, m, n);
-        sinkIsland(grid, currentRow, currentCol + 1, m, n);
+        boolean up = isClosed(grid, r-1, c, vis);
+        boolean right = isClosed(grid, r, c+1, vis);
+        boolean down = isClosed(grid, r+1, c, vis);
+        boolean left = isClosed(grid, r, c-1, vis);
         
-        return;
-        
+        return up && right && down && left;
     }
-    
 }
