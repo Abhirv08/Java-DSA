@@ -1,14 +1,34 @@
 class Solution {
     public int minimizeArrayValue(int[] nums) {
-        // Initialize answer and the prefix sum.
-        long answer = 0, prefixSum = 0;   
-
-        // Iterate over nums, update prefix sum and answer.
-        for (int i = 0; i < nums.length; ++i) {
-            prefixSum += nums[i];
-            answer = Math.max(answer, (prefixSum + i) / (i + 1));
+        int n = nums.length;
+        long[] ps = new long[n];
+        ps[0] = nums[0];
+        int mx = nums[0];
+        for(int i = 1; i < n; i++){
+            ps[i] = ps[i-1] + nums[i];
+            mx = Math.max(mx, nums[i]);
         }
-
-        return (int)answer;
+        
+        long l = 1, r = mx;
+        
+        long ans = 0;
+        while(l <= r){
+            long m = (long) (r+l)/2;
+            
+            int i = 0;
+            for(; i < n; i++){
+                if(nums[i] < 1) continue;
+                long iv = (i+1)*m;
+                if(iv < ps[i]) break;
+            }
+            
+            if(i < n) l = m + 1;
+            else{
+                ans = m;
+                r = m - 1;
+            }
+        }
+        
+        return (int) ans;
     }
 }
