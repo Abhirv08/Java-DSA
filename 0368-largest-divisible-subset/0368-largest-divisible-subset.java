@@ -1,36 +1,37 @@
 class Solution {
-    
     public List<Integer> largestDivisibleSubset(int[] nums) {
         int n = nums.length;
         Arrays.sort(nums);
+        int[] pre = new int[n];
+        Arrays.fill(pre, 1);
         
-        int[] hash = new int[n];
-        
-        int[] dp = new int[n];
-        Arrays.fill(dp, 1);
-        
-        int maxIdx = 0, max = 1;
-        for(int i = 0; i < n; i++){
-            hash[i] = i;
-            for(int prev = 0; prev < i; prev++){
-                if(nums[i]%nums[prev] == 0 && dp[prev]+1 > dp[i]){
-                    dp[i] = dp[prev] + 1;
-                    hash[i] = prev;
+        int maxCount = 0, idx = 0;;
+        for(int i = 1; i < n; i++){
+            for(int j = 0; j < i; j++){
+                if(nums[i]%nums[j] == 0){
+                    pre[i] = Math.max(pre[i], pre[j] + 1);
                 }
             }
-            if(max < dp[i]){
-                max = dp[i];
-                maxIdx = i;
+            if(pre[i] > maxCount){
+                maxCount = pre[i];
+                idx = i;
             }
         }
         
-        //System.out.println(Arrays.toString(hash));
         List<Integer> list = new ArrayList<>();
-        list.add(nums[maxIdx]);
-        while(hash[maxIdx] != maxIdx){
-            maxIdx = hash[maxIdx];            
-            list.add(nums[maxIdx]);
+        int lastNum = nums[idx];
+        while(maxCount > 0){
+            list.add(nums[idx]);
+            maxCount--;
+            idx--;
+            while(idx >= 0 && (pre[idx] != maxCount || lastNum%nums[idx] != 0)){
+                idx--;
+            }
+            if(idx < 0) break;
+            lastNum = nums[idx];
         }
+        
+        if(list.size() == 0) list.add(nums[0]);
         
         return list;
     }
