@@ -1,35 +1,19 @@
 class Solution {
     public String removeStars(String s) {
-        Stack<Character> st = new Stack<>();
+        int i = 0;
+        int n = s.length();
+        StringBuilder ans = new StringBuilder();
         
-        for(int i = 0; i < s.length(); i++){
-            st.push(s.charAt(i));
-        }
-        
-        
-        StringBuilder str = new StringBuilder();
-        
-        int stars = 0;
-        while(!st.isEmpty()){
-            char ch = st.pop();
-            
+        while(i < n){
+            char ch = s.charAt(i);
             if(ch == '*'){
-                stars++;
+                ans.deleteCharAt(ans.length() - 1);
             }else{
-                str.insert(0, ch);                
+                ans.append(ch);
             }
-            
-            while(stars > 0){
-                char cha = st.pop();
-                if(cha == '*'){
-                    stars++;
-                }else{
-                    stars--;
-                }
-                
-            }
+            i++;
         }
         
-        return str.toString();
+        return ans.toString();
     }
 }
