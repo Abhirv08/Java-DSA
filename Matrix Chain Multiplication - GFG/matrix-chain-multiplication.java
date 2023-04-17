@@ -33,21 +33,19 @@ class Solution{
     static int matrixMultiplication(int N, int arr[])
     {
         dp = new int[N][N];
-        for(int[] r: dp) Arrays.fill(r, -1);
-        return helper(arr, 1, N-1);
-    }
-    
-    private static int helper(int[] arr, int start, int end){
-        if(start == end) return 0;
         
-        if(dp[start][end] != -1) return dp[start][end];                                              
-        
-        int min = Integer.MAX_VALUE;
-        for(int k = start; k < end; k++){
-            int val = arr[start-1]*arr[k]*arr[end] + helper(arr, start, k) + helper(arr, k+1, end);
-            min = Math.min(min, val);
+        for(int i = N-1; i > 0; i--){
+            for(int j = i+1; j < N; j++){
+                int min = Integer.MAX_VALUE;
+                for(int k = i; k < j; k++){
+                    int val = arr[i-1]*arr[k]*arr[j] + dp[i][k] + dp[k+1][j];
+                    min = Math.min(min, val);
+                }
+                dp[i][j] = (min == Integer.MAX_VALUE ? 0 : min);
+            }
         }
         
-        return dp[start][end] = (min == Integer.MAX_VALUE ? 0 : min);
+        // return helper(arr, 1, N-1);
+        return dp[1][N-1];
     }
 }
