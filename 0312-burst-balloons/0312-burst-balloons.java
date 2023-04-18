@@ -7,11 +7,23 @@ class Solution {
             nums2[i] = nums[i-1];
         }
         
-        int[][] dp = new int[n+1][n+1];
+        int[][] dp = new int[n+2][n+2];
         
-        for(int[] a: dp) Arrays.fill(a, -1);
+        for(int i = n; i >= 1; i--){
+            for(int j = 1; j <= n; j++){
+                int max = 0;
+                for(int k = i; k <= j; k++){
+                    int sum = nums2[i-1]*nums2[k]*nums2[j+1] + dp[i][k-1]
+                        + dp[k+1][j];
+                    if(max < sum) max = sum;
+                }
+
+                dp[i][j] = max;
+            }
+        }
         
-        return maxCoins(nums2, 1, n, dp);
+        // return maxCoins(nums2, 1, n, dp);
+        return dp[1][n];
     }
     
     private int maxCoins(int[] nums, int s, int e, int[][] dp){
