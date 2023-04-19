@@ -14,32 +14,25 @@
  * }
  */
 class Solution {
+    int maxSteps;
     public int longestZigZag(TreeNode root) {
-         return longestPath(root, 'b', new HashMap<>());
+        maxSteps = 0;
+        longestPath(root, 0, 0);
+        return maxSteps;
     }
     
-    private int longestPath(TreeNode root, char dir, HashMap<String, Integer> map){
-        if(root == null) return -1;
+    private void longestPath(TreeNode root, int left, int right){
+        if(root == null) return ;
+        maxSteps = Math.max(maxSteps, Math.max(left, right));
         
-        String key = root + ":" + dir;
-        if(map.containsKey(key)) return map.get(key);
-        
-        int max = 0;
-        if(dir != 'r'){
-            int path = 1 + longestPath(root.right, 'r', map);
-            if(max < path) max = path;
-        }
-        if(dir != 'l'){
-            int path = 1 + longestPath(root.left, 'l', map);
-            if(max < path) max = path;
-        }
-        if(dir == 'b'){
-            int leftPath = longestPath(root.left, dir, map);
-            int rightPath = longestPath(root.right, dir, map);
-            max = Math.max(max, Math.max(leftPath, rightPath));
+        if(root.left != null){
+            longestPath(root.left, right+1, 0);
         }
         
-        map.put(key, max);
-        return max;
+        if(root.right != null){
+            longestPath(root.right, 0, left+1);
+        }
+        
+        return;
     }
 }
