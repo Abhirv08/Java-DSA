@@ -1,20 +1,25 @@
 class Solution {
+    int[][] dp;
     public int minInsertions(String s) {
         int n = s.length();
+        dp = new int[n][n];
+        for(int[] a: dp) Arrays.fill(a, -1);
         
+        return findMinIns(s, 0, n - 1);
+    }
+    
+    private int findMinIns(String s, int i, int j){
+        if(i >= j) return 0;
         
-        int[][] dp = new int[n + 1][n + 1];
+        if(dp[i][j] != -1) return dp[i][j];
         
-        for(int i = 1; i < n+1; i++){
-            for(int j = 1; j < n + 1; j++){
-                if(s.charAt(i - 1) == s.charAt(n - j)){
-                    dp[i][j] = 1 + dp[i-1][j-1];
-                }else{
-                    dp[i][j] = Math.max(dp[i][j - 1], dp[i - 1][j]);
-                }
-            }
+        if(s.charAt(i) == s.charAt(j)) {
+            return findMinIns(s, i+1, j-1);
         }
         
-        return n - dp[n][n];
+        int left = findMinIns(s, i+1, j);
+        int right = findMinIns(s, i, j-1);
+        
+        return dp[i][j] = 1 + Math.min(left, right);
     }
 }
