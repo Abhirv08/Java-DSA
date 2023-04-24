@@ -1,27 +1,25 @@
-class Solution {
-    long mod = 1000000007;
-    long[] dp;
+class Solution {    
     public int numberOfArrays(String s, int k) {
-        dp = new long[s.length()];
-        Arrays.fill(dp, -1);
-        return (int) (formedNumbers(s, k, 0)%mod);
-    }
-    
-    private long formedNumbers(String s, int k, int idx){
-        if(idx == s.length()) return 1;
+        long mod = 1000000007;
+        int n = s.length();
+        long[] dp = new long[n+1];
         
-        if(dp[idx] != -1) return dp[idx];
-        
-        long num = 0, count = 0;
-        for(int i = idx; i < s.length(); i++){
-            char ch = s.charAt(i);
-            num = num*10 + (ch - '0');
-            if(num >= 1 && num <= k){
-                count += formedNumbers(s, k, i+1)%mod;
-                count %= mod;
-            }else if(num > k || num < 1) break;
+        dp[n] = 1;
+        for(int i = n-1; i >= 0; i--){
+            long num = 0, count = 0;
+            for(int j = i; j < n; j++){
+                char ch = s.charAt(j);
+                num = num*10 + (ch - '0');
+                if(num >= 1 && num <= k){
+                    count += dp[j+1]%mod;
+                    count %= mod;
+                }else if(num > k || num < 1) break;
+            }
+
+            dp[i] = count%mod;
         }
         
-        return dp[idx] = count;
+        
+        return (int) dp[0];
     }
 }
