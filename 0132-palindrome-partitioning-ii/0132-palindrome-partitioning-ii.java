@@ -1,25 +1,23 @@
 class Solution {
-    int[] dp;
     public int minCut(String s) {
-        dp = new int[s.length()];
-        Arrays.fill(dp, -1);
-        return minCuts(s, 0);
-    }
-    
-    private int minCuts(String s, int idx){
-        if(idx == s.length()) return -1;
+        int n = s.length();
+        int[] dp = new int[n+1];
         
-        if(dp[idx] != -1) return dp[idx];
-        
-        int cuts = Integer.MAX_VALUE;
-        for(int i = idx+1; i <= s.length(); i++){
-            if(isPalindrome(s.substring(idx, i))){
-                int cur = 1 + minCuts(s, i);            
-                cuts = Math.min(cuts, cur);
+        dp[n] = -1;
+        for(int i = n-1; i >= 0; i--){
+            int cuts = Integer.MAX_VALUE;
+            for(int j = i+1; j <= n; j++){
+                if(isPalindrome(s.substring(i, j))){
+                    int cur = 1 + dp[j];            
+                    cuts = Math.min(cuts, cur);
+                }
             }
+
+            dp[i] = (cuts == Integer.MAX_VALUE ? 0 : cuts);
         }
         
-        return dp[idx] = (cuts == Integer.MAX_VALUE ? 0 : cuts);
+        // return minCuts(s, 0);
+        return dp[0];
     }
     
     private boolean isPalindrome(String s){
