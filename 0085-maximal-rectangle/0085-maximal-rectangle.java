@@ -2,21 +2,18 @@ class Solution {
     public int maximalRectangle(char[][] matrix) {
         int rows = matrix.length, cols = matrix[0].length;
         
-        int[][] mat = new int[rows][cols];
-        
+        int[] h = new int[cols];
+        int maxArea = 0;
         for(int r = 0; r < rows; r++){
             for(int c = 0; c < cols; c++){
                 if(r == 0){
-                    mat[r][c] = (matrix[r][c] == '1' ? 1 : 0);
+                    h[c] = (matrix[r][c] == '1' ? 1 : 0);
                 }else{
-                    mat[r][c] = (matrix[r][c] == '0' ? 0 : 1 + mat[r-1][c]);
+                    h[c] = (matrix[r][c] == '0' ? 0 : 1 + h[c]);
                 }
             }
-        }
-        
-        int maxArea = 0;
-        for(int r = 0; r < rows; r++){
-            maxArea = Math.max(maxArea, maxRect(mat[r]));
+            
+            maxArea = Math.max(maxArea, maxRect(h));
         }
         
         return maxArea;
