@@ -1,53 +1,28 @@
 class Solution {
-    public int largestRectangleArea(int[] heights) {
-        Stack<int[]> st = new Stack<>();
-        int n = heights.length;
+    public int largestRectangleArea(int[] h) {
+        int n = h.length;
         
-        int[] smallerInLeft = new int[n];
-        
-        int[] smallerInRight = new int[n];
-        
-        st.push(new int[]{heights[0], 0});
-        smallerInLeft[0] = -1;
-        for(int i = 1; i < n; i++){
-            while(!st.isEmpty() && st.peek()[0] >= heights[i]){
-                st.pop();
-            }
-            
-            if(st.isEmpty()){
-                smallerInLeft[i] = -1;
-            }else{
-                smallerInLeft[i] = st.peek()[1];
-            }
-            st.push(new int[]{heights[i], i});
-        }
-        
-        st.clear();
-        
-        st.push(new int[]{heights[n-1], n-1});
-        smallerInRight[n-1] = n;
-        for(int i = n-2; i >= 0; i--){
-            while(!st.isEmpty() && st.peek()[0] >= heights[i]){
-                st.pop();
-            }
-            
-            if(st.isEmpty()){
-                smallerInRight[i] = n;
-            }else{
-                smallerInRight[i] = st.peek()[1];
-            }
-            st.push(new int[]{heights[i], i});
-        }
-        
-         System.out.println(Arrays.toString(smallerInRight));
-         System.out.println(Arrays.toString(smallerInLeft));
-        
-        int ans = 0;
-        
+        Stack<Integer> st = new Stack<>();
+        int area = 0;
         for(int i = 0; i < n; i++){
-            ans = Math.max(ans, (smallerInRight[i] - smallerInLeft[i] - 1)*heights[i]);
+            while(!st.isEmpty() && h[st.peek()] > h[i]){
+                int right = i;
+                int cur = h[st.pop()];
+                int left = st.isEmpty() ? -1 : st.peek();
+
+                area = Math.max(area, (right - left - 1)*cur);
+            }
+            st.push(i); 
         }
         
-        return ans;
+        while(!st.isEmpty()){
+            int right = n;
+            int cur = h[st.pop()];
+            int left = st.isEmpty() ? -1 : st.peek();
+
+            area = Math.max(area, (right - left - 1)*cur);
+        }
+        
+        return area;
     }
 }
