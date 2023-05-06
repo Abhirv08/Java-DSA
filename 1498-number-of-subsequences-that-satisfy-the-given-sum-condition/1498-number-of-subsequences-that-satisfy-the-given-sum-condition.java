@@ -1,26 +1,28 @@
 class Solution {
+    int mod = 1000000007;
     public int numSubseq(int[] nums, int target) {
-        int mod = 1000000007;
-        int n = nums.length;
         Arrays.sort(nums);
+        int n = nums.length;
         
         int[] pow = new int[n];
         pow[0] = 1;
         for(int i = 1; i < n; i++){
             pow[i] = (pow[i-1]*2)%mod;
         }
-
-        long ans = 0;
-        int r = n - 1;
         
-        for(int i = 0; i < n; i++){
-            while(r >= 0 && nums[i] + nums[r] > target && i <= r) r--;
-            
-            if(i <= r){
-                ans = (ans + pow[r-i])%mod;
+        int s = 0, e = n - 1;
+        int count = 0;
+        while(s <= e){
+            int sum = nums[s] + nums[e];
+            if(sum <= target){
+                count += pow[e-s];
+                count %= mod;
+                s++;
+            }else{
+                e--;
             }
         }
         
-        return (int)(ans%mod);
+        return count;
     }
 }
