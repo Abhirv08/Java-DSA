@@ -5,22 +5,22 @@
 var createCounter = function(init) {
     let num = init;
     
-    return {
-        increment: function() {
-            num += 1
-            return num;
-        },
-
-        reset: function(){
-            num = init
-            return num
-        },
-
-        decrement: function(){
-            num -= 1
-            return num
-        }
+    function increment(){
+        num += 1
+        return num;
     }
+    
+    function reset(){
+        num = init
+        return num
+    }
+    
+    function decrement(){
+        num -= 1
+        return num
+    }
+    
+    return { increment, decrement, reset };
 };
 
 /**
