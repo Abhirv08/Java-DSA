@@ -1,7 +1,7 @@
 # Distance of nearest cell having 1
 ## Medium
 <div class="problems_problem_content__Xm_eO"><p><span style="font-size:18px">Given a binary grid of <strong>n*m</strong>. Find the distance of the nearest 1 in the grid&nbsp;for each cell.<br>
-The distance is calculated as&nbsp;<strong>|i<sub>1</sub>&nbsp; - i<sub>2</sub>| + |j<sub>1</sub>&nbsp;- j<sub>2</sub>|</strong>, where i<sub>1</sub>, j<sub>1</sub>&nbsp;are the row number and column number of the current cell, and i<sub>2</sub>, j<sub>2</sub>&nbsp;are the row number and column number of the nearest cell having value 1.</span><br>
+The distance is calculated as&nbsp;<strong>|i<sub>1</sub>&nbsp; - i<sub>2</sub>| + |j<sub>1</sub>&nbsp;- j<sub>2</sub>|</strong>, where i<sub>1</sub>, j<sub>1</sub>&nbsp;are the row number and column number of the current cell, and i<sub>2</sub>, j<sub>2</sub>&nbsp;are the row number and column number of the nearest cell having value 1.</span>&nbsp;<span style="font-size:18px">There should be atleast one 1 in the grid.</span><br>
 &nbsp;</p>
 
 <p><span style="font-size:18px"><strong>Example 1:</strong></span></p>
