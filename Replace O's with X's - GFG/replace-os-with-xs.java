@@ -47,7 +47,7 @@ class Solution{
         for(int r = 0; r < n; r++){
             for(int c = 0; c < m; c++){
                 if(r == 0 || r == n-1 || c == 0 || c == m-1){
-                    if(a[r][c] == 'O'){
+                    if(a[r][c] == 'O' && !vis[r][c]){
                         dfs(n, m, a, r, c, vis);
                     }
                 }
