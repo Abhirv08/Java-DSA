@@ -39,49 +39,45 @@ class Solution
     //Function to find distance of nearest 1 in the grid for each cell.
     public int[][] nearest(int[][] grid)
     {
-        int n = grid.length; 
-        int m = grid[0].length;
-        int[][] ans = new int[n][m];
-        for(int[] a: ans){
-            Arrays.fill(a, Integer.MAX_VALUE);
+        int m = grid.length, n = grid[0].length;
+        int[][] ans = new int[m][n];
+        for(int[] r: ans){
+            Arrays.fill(r, -1);
         }
         
-        int[][] dirs = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
         Queue<int[]> q = new LinkedList<>();
-        boolean[][] vis = new boolean[n][m];
         
-        for(int i = 0; i < n; i++){
-            for(int j = 0; j < m; j++){
-                if(grid[i][j] == 1){
-                    q.add(new int[]{i, j});
-                    vis[i][j] = true;
+        for(int r = 0; r < m; r++){
+            for(int c = 0; c < n; c++){
+                if(grid[r][c] == 1) {
+                    ans[r][c] = 0;
+                    q.add(new int[]{r, c, 0});
                 }
             }
         }
         
-        int steps = 0;
         while(!q.isEmpty()){
-            int size = q.size();
-            while(size-- > 0){
-                int[] loc = q.poll();
-                int cr = loc[0];
-                int cc = loc[1];
-                
-                ans[cr][cc] = Math.min(steps, ans[cr][cc]);
-                
-                for(int[] d: dirs){
-                    int nr = cr + d[0];
-                    int nc = cc + d[1];
+            int[] cur = q.poll();
+            
+            for(int i = -1; i <= 1; i++){
+                for(int j = -1; j <= 1; j++){
+                    int nr = cur[0] + i;
+                    int nc = cur[1] + j;
+                    int cost = cur[2] + Math.abs(nr - cur[0]) + 
+                    Math.abs(nc - cur[1]);
                     
-                    if(nr >= 0 && nr < n && nc >= 0 && nc < m && !vis[nr][nc]){
-                        vis[nr][nc] = true;
-                        q.add(new int[]{nr, nc});
+                    if(nr >= 0 && nr < m && nc >= 0 && nc < n && (ans[nr][nc] == -1 ||
+                    ans[nr][nc] > cost)){
+                        ans[nr][nc] = cost;
+                        q.add(new int[]{nr, nc, cost});
                     }
                 }
             }
-            steps++;
+            
         }
         
-        return ans;
+        return ans; 
     }
+    
+    
 }
