@@ -1,19 +1,19 @@
 class Solution {
-    long[] dp;
-    public long mostPoints(int[][] questions) {
-        dp = new long[questions.length];
-        Arrays.fill(dp, -1);
-        return maxPoints(questions, 0);
-    }
-    
-    private long maxPoints(int[][] q, int idx){
-        if(idx >= q.length) return 0;
+    public long mostPoints(int[][] q) {
+        int n = q.length;
         
-        if(dp[idx] != -1) return dp[idx];
+        long[] dp = new long[n+1];
         
-        long ifTaken = q[idx][0] + maxPoints(q, idx + q[idx][1] + 1);
-        long taken = maxPoints(q, idx + 1);
+        for(int idx = n-1; idx >= 0; idx--){
+            long ifTaken = q[idx][0];
+            if(idx + q[idx][1] + 1 < n){
+                ifTaken += dp[idx + q[idx][1] + 1];
+            }
+            long taken = dp[idx + 1];
         
-        return dp[idx] = Math.max(ifTaken ,taken);
+            dp[idx] = Math.max(ifTaken ,taken);
+        }
+            
+        return dp[0];
     }
 }
