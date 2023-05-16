@@ -13,26 +13,15 @@ class Solution {
         if(head == null || head.next == null) return head;
         
         ListNode temp = head;
+        ListNode next = temp.next;
         
-        ListNode prev = null;
-        while(temp != null){
-            ListNode cur = temp;
-            ListNode next = temp.next;
-            
-            if(next == null) return head;
-            if(prev == null){
-                cur.next = next.next;
-                next.next = cur;
-                head = next;
-            }else{
-                prev.next = next;
-                cur.next = next.next;
-                next.next = cur;
-            }            
-            prev = cur;
-            temp = cur.next;
-        }
+        if(next == null) return head;
         
-        return head;
+        ListNode doubleNext = next.next;
+        next.next = temp;
+        head = next;        
+        temp.next = swapPairs(doubleNext);
+        
+        return next;
     }
 }
